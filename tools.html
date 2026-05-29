@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools - Cyber Blog</title>
+    <link rel="stylesheet" href="style.css"> <!-- Asosiy stil faylingiz -->
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #121212; color: #e0e0e0; margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: auto; }
+        h1, h2 { color: #00bcd4; border-bottom: 2px solid #00bcd4; padding-bottom: 10px; }
+        .tool-section { margin-bottom: 40px; background-color: #1e1e1e; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        ul { list-style-type: none; padding: 0; }
+        li { background-color: #2a2a2a; margin-bottom: 10px; padding: 15px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; transition: transform 0.2s; }
+        li:hover { transform: translateY(-3px); background-color: #333; }
+        a { color: #4fc3f7; text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
+        .tool-description { max-width: 70%; }
+        .tool-link { max-width: 25%; text-align: right; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cyber Security Vositalari (To'liq Ro'yxat)</h1>
+        <p>Bu yerda Blue Team, Red Team, Penetratsion Testlash va boshqa yo'nalishdagi mutaxassislari uchun eng mashhur va foydali vositalarning keng ro'yxati keltirilgan.</p>
+
+        <div class="tool-section">
+            <h2>Blue Team Vositalari (Himoya va Monitoring)</h2>
+            <ul>
+                <li>
+                    <span class="tool-description"><strong>Wireshark:</strong> Tarmoq trafikini chuqur tahlil qilish va xavflarni aniqlash.</span>
+                    <span class="tool-link"><a href="https://www.wireshark.org/" target="_blank">Wireshark.org</a></span>
+                </li>
+                <li>
+                    <span class="tool-description"><strong>Splunk:</strong> Loglarni yig'ish, indekslash va tahlil qilish uchun platforma (SIEM).</span>
+                    <span class="tool-link"><a href="https://www.splunk.com/" target="_blank">Splunk.com</a></span>
+                </li>
+                <li>
+                    <span class="tool-description"><strong>ELK Stack (Elasticsearch, Logstash, Kibana):</strong> Ochiq kodli loglarni boshqarish va vizualizatsiya qilish.</span>
+                    <span class="tool-link"><a href="https://www.elastic.co/what-is/elk-stack" target="_blank">Elastic.co</a></span>
+                </li>
+                <li>
+                    <span class="tool-description"><strong>OSSEC:</strong> Ochiq kodli Host-based Intrusion Detection System (HIDS).</span>
+                    <span class="tool-link"><a href="https://www.ossec.net/" target="_blank">OSSEC.net</a></span>
+                </li>
+                <li>
+                    <span class="tool-description"><strong>Snort:</strong> Tarmoqga asoslangan kirishni oldini olish tizimi (NIPS/IDS).</span>
+                    <span class="tool-link"><a href="https://www.snort.org/" target="_blank">Snort.org</a></span>
+                </li>
+                <li>
+                    <span class="tool-description"><strong>AlienVault OSSIM:</strong> Ochiq kodli SIEM va xavfsizlikni boshqarish.</span>
+                    <span class="tool-link"><a href="https://www.alienvault.com/products/ossim" target="_blank">AlienVault.com</a></span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="tool-section">
+            <h2>Red Team Vositalari (Hujum va Penetratsion Test)</h2>
+            <ul>
+                <li>
+                    <span class="tool-description"><strong>Metasploit Framework:</strong> Xavfsizlik zaifliklarini topish va ulardan foydalanish uchun eng mashhur platforma.</span>
+                    <span class="tool-link"><a href="https://www.metasploit.com/" target="_blank">Metasploit.com</a></span>
+                </li>
+                <li>
+                    <span class="tool-description"><strong>Burp Suite:</strong> Veb-ilovalarning xavfsizligini sinash uchun mustahsil vosita (Proxy).</span>
+                    <span class="tool-link"><a href="https://portswigger.net/burp" target="_blank">PortSwigger.net</a></span>
+                </li>
+                <li>
+                    <span class="tool-description"><strong>Nmap:</strong> Tarmoq skaneri. Portlarni skanlash, xizmatlarni aniqlash va OS ni aniqlash.</span>
+                    <span class="tool-link"><a href="https://nmap.org/" target="_blank">Nmap.org</a></span>
+                </li>
+                <li>
+                    <span class="tool-description"><strong>SQLmap:</strong> SQL injektsiyalarini avtomatik topish va undan foydalanish.</span>
+                    <span class="tool-link"><a href="http://sqlmap.org/" target="_blank">SQLmap.org</a></span>
+                </li>
+                <li>
+                    <span class="tool-description"><strong>John the Ripper:</strong> Parolni "sinib ko'rish" (password cracking) vositasi.</span>
+                    <span class="tool-link"><a href="https://www.openwall.com/john/" target="_blank">Openwall.com</a></span>
+                </li>
+                <li>
+                    <span class="tool-description"><strong>Hashcat:</strong> Dunyodagi eng tez parolni tiklash vositasi.</span>
+                    <span class="tool-link"><a href="https://hashcat.net/hashcat/" target="_blank">Hashcat.net</a></span>
+                </li>
+                <li>
+                    <span class="tool-description"><strong>Aircrack-ng:</strong> Wi-Fi tarmoqlarining xavfsizligini tekshirish uchun to'plam.</span>
+                    <span class="tool-link"><a href="https://www.aircrack-ng.org/" target="_blank">Aircrack-ng.org</a></span>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="tool-section">
+            <h2>Reconnaissance (Ma'lumot to'plash)</h2>
+            <ul>
+                <li>
+                    <span class="tool-description"><strong>theHarvester:</strong> E-mail, subdomainlar, hostlar nomlarini jamlaydigan vosita.</span>
+                    <span class="tool-link"><a href="https://github.com/laramies/theHarvester" target="_blank">GitHub</a></span>
+                </li>
+                <li>
+                    <span class="tool-description"><strong>Maltego:</strong> Open Source Intelligence (OSINT) va ma'lumotlarni vizualizatsiya qilish.</span>
+                    <span class="tool-link"><a href="https://www.maltego.com/" target
