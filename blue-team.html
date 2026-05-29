@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blue Team — CyberUz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #050a0e;
+      --bg2: #0a1520;
+      --green: #00ff88;
+      --cyan: #00e5ff;
+      --blue: #0084ff;
+      --red: #ff2d55;
+      --text: #c8d8e4;
+      --muted: #4a6070;
+      --card: #0d1e2c;
+      --border: #1a3045;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,132,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,132,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(5,10,14,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 3px;
+      color: var(--green);
+      text-decoration: none;
+      text-shadow: 0 0 20px rgba(0,255,136,0.5);
+    }
+
+    .logo span { color: var(--cyan); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--blue); }
+    .nav-links a.active { color: var(--blue); }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      z-index: 1;
+      padding: 120px 4rem 4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .breadcrumb {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.5s 0.1s forwards;
+    }
+
+    .breadcrumb a { color: var(--green); text-decoration: none; }
+    .breadcrumb span { color: var(--blue); }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,132,255,0.1);
+      border: 1px solid var(--blue);
+      padding: 6px 16px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--blue);
+      letter-spacing: 3px;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.5s 0.2s forwards;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--blue);
+      animation: pulse-blue 1.5s infinite;
+    }
+
+    @keyframes pulse-blue {
+      0%, 100% { box-shadow: 0 0 6px var(--blue); }
+      50% { box-shadow: none; }
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      line-height: 0.95;
+      letter-spacing: 3px;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.5s 0.3s forwards;
+    }
+
+    .hero h1 .t1 { color: var(--blue); text-shadow: 0 0 40px rgba(0,132,255,0.4); }
+    .hero h1 .t2 { color: #fff; }
+    .hero h1 .t3 { color: transparent; -webkit-text-stroke: 1px var(--muted); }
+
+    .hero-desc {
+      max-width: 600px;
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.5s 0.4s forwards;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.5s 0.5s forwards;
+    }
+
+    .h-stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      color: var(--blue);
+      line-height: 1;
+    }
+
+    .h-stat-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+    }
+
+    /* SECTION */
+    .section {
+      position: relative;
+      z-index: 1;
+      padding: 4rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      letter-spacing: 3px;
+      color: #fff;
+    }
+
+    .section-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--blue);
+      letter-spacing: 3px;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+
+    /* STEPS */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      margin-bottom: 4rem;
+    }
+
+    .step {
+      background: var(--card);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .step:hover { background: #0f2335; }
+
+    .step-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 5rem;
+      color: rgba(0,132,255,0.08);
+      position: absolute;
+      top: -10px; right: 10px;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .step-icon {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--blue);
+      letter-spacing: 2px;
+      border: 1px solid var(--blue);
+      padding: 3px 10px;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+
+    .step-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      color: #fff;
+      letter-spacing: 1px;
+      margin-bottom: 0.8rem;
+    }
+
+    .step-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .step-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tool-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      background: rgba(0,132,255,0.1);
+      color: var(--blue);
+      border: 1px solid rgba(0,132,255,0.3);
+    }
+
+    /* ARTICLES */
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .article-card {
+      background: var(--card);
+      padding: 2rem;
+      cursor: pointer;
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .article-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--blue);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+
+    .article-card:hover { background: #0f2335; }
+    .article-card:hover::after { transform: scaleX(1); }
+
+    .article-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      padding: 3px 10px;
+      border: 1px solid var(--blue);
+      color: var(--blue);
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+
+    .article-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      color: #fff;
+      letter-spacing: 1px;
+      line-height: 1.2;
+      margin-bottom: 0.8rem;
+    }
+
+    .article-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .code-snippet {
+      background: #050a0e;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--blue);
+      padding: 1rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .c-blue { color: var(--blue); }
+    .c-green { color: var(--green); }
+    .c-cyan { color: var(--cyan); }
+    .c-muted { color: var(--muted); }
+    .c-red { color: var(--red); }
+
+    .article-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .article-read { color: var(--blue); }
+    .article-read::after { content: ' →'; }
+
+    .difficulty {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 0.5rem;
+    }
+
+    .diff-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+
+    .diff-dot.active { background: var(--blue); }
+
+    /* TOOLS */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .tool-card {
+      background: var(--card);
+      padding: 1.5rem;
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+
+    .tool-card:hover { background: #0f2335; }
+
+    .tool-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      color: var(--blue);
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+    }
+
+    .tool-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 0.8rem;
+    }
+
+    .tool-cmd {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--green);
+      background: rgba(0,255,136,0.05);
+      padding: 4px 8px;
+    }
+
+    /* ALERT LEVELS */
+    .alert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      margin-bottom: 2rem;
+    }
+
+    .alert-card {
+      background: var(--card);
+      padding: 1.5rem;
+      border-left: 3px solid;
+    }
+
+    .alert-card.critical { border-color: var(--red); }
+    .alert-card.high { border-color: #ff9500; }
+    .alert-card.medium { border-color: #ffd60a; }
+    .alert-card.low { border-color: var(--green); }
+
+    .alert-level {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+    }
+
+    .alert-card.critical .alert-level { color: var(--red); }
+    .alert-card.high .alert-level { color: #ff9500; }
+    .alert-card.medium .alert-level { color: #ffd60a; }
+    .alert-card.low .alert-level { color: var(--green); }
+
+    .alert-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      color: #fff;
+      letter-spacing: 1px;
+      margin-bottom: 0.4rem;
+    }
+
+    .alert-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* FOOTER */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      color: var(--green);
+      letter-spacing: 3px;
+      text-decoration: none;
+    }
+
+    .footer-copy {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-links a {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: var(--green); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 1.5rem 3rem; }
+      .section { padding: 3rem 1.5rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">Cyber<span>Uz</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">BOSH SAHIFA</a></li>
+    <li><a href="red-team.html">RED TEAM</a></li>
+    <li><a href="blue-team.html" class="active">BLUE TEAM</a></li>
+    <li><a href="#">TOOLS</a></li>
+    <li><a href="#">CTF</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="breadcrumb">
+    <a href="index.html">BOSH SAHIFA</a> / <span>BLUE TEAM</span>
+  </div>
+  <div class="hero-badge">DEFENSIVE SECURITY</div>
+  <h1>
+    <div class="t1">BLUE</div>
+    <div class="t2">TEAM</div>
+    <div class="t3">OPERATIONS</div>
+  </h1>
+  <p class="hero-desc">
+    Himoya texnikalar, SIEM monitoring, Incident Response va Threat Hunting — SOC Analyst va Blue Team mutaxassislari uchun amaliy qo'llanmalar.
+  </p>
+  <div class="hero-stats">
+    <div>
+      <div class="h-stat-num">28</div>
+      <div class="h-stat-label">MAQOLALAR</div>
+    </div>
+    <div>
+      <div class="h-stat-num">SOC</div>
+      <div class="h-stat-label">ANALYST</div>
+    </div>
+    <div>
+      <div class="h-stat-num">24/7</div>
+      <div class="h-stat-label">MONITORING</div>
+    </div>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-tag">> METHODOLOGY</span>
+    <h2 class="section-title">BLUE TEAM VAZIFALARI</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-icon">MONITOR</div>
+      <h3 class="step-title">Monitoring</h3>
+      <p class="step-desc">Tizim va tarmoqdagi barcha hodisalarni real-time kuzatish va loglarni tahlil qilish.</p>
+      <div class="step-tools">
+        <span class="tool-tag">Splunk</span>
+        <span class="tool-tag">ELK Stack</span>
+        <span class="tool-tag">Grafana</span>
+        <span class="tool-tag">Wazuh</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-icon">DETECT</div>
+      <h3 class="step-title">Aniqlash</h3>
+      <p class="step-desc">Anomal faoliyat, zararli dasturlar va hujum belgilarini aniqlash.</p>
+      <div class="step-tools">
+        <span class="tool-tag">IDS/IPS</span>
+        <span class="tool-tag">Snort</span>
+        <span class="tool-tag">Suricata</span>
+        <span class="tool-tag">YARA</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-icon">RESPOND</div>
+      <h3 class="step-title">Javob Berish</h3>
+      <p class="step-desc">Hujum aniqlanganda tezkor choralar ko'rish — izolyatsiya, bloklash, tiklash.</p>
+      <div class="step-tools">
+        <span class="tool-tag">TheHive</span>
+        <span class="tool-tag">Cortex</span>
+        <span class="tool-tag">SOAR</span>
+        <span class="tool-tag">Playbook</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-icon">HUNT</div>
+      <h3 class="step-title">Threat Hunting</h3>
+      <p class="step-desc">Tizimda yashirinib yotgan hujumchilarni proaktiv qidirish.</p>
+      <div class="step-tools">
+        <span class="tool-tag">IOC</span>
+        <span class="tool-tag">TTPs</span>
+        <span class="tool-tag">MITRE ATT&CK</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">05</div>
+      <div class="step-icon">FORENSICS</div>
+      <h3 class="step-title">Raqamli Forensika</h3>
+      <p class="step-desc">Hujum qanday bo'lganini aniqlash — disk, xotira va tarmoq tahlili.</p>
+      <div class="step-tools">
+        <span class="tool-tag">Autopsy</span>
+        <span class="tool-tag">Volatility</span>
+        <span class="tool-tag">Wireshark</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">06</div>
+      <div class="step-icon">HARDEN</div>
+      <h3 class="step-title">Mustahkamlash</h3>
+      <p class="step-desc">Zaifliklarni yopish, tizimni himoyalash va kelajakdagi hujumlarni oldini olish.</p>
+      <div class="step-tools">
+        <span class="tool-tag">CIS Benchmark</span>
+        <span class="tool-tag">Firewall</span>
+        <span class="tool-tag">Patch</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ALERT LEVELS -->
+<section class="section" style="padding-top: 0;">
+  <div class="section-header">
+    <span class="section-tag">> THREAT LEVELS</span>
+    <h2 class="section-title">XAVF DARAJALARI</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="alert-grid">
+    <div class="alert-card critical">
+      <div class="alert-level">CRITICAL</div>
+      <div class="alert-title">Darhol Javob Kerak</div>
+      <div class="alert-desc">Ransomware, APT hujumi, ma'lumot o'g'irlash — 15 daqiqa ichida javob</div>
+    </div>
+    <div class="alert-card high">
+      <div class="alert-level">HIGH</div>
+      <div class="alert-title">Tezkor Tahlil</div>
+      <div class="alert-desc">Privilege escalation, lateral movement — 1 soat ichida javob</div>
+    </div>
+    <div class="alert-card medium">
+      <div class="alert-level">MEDIUM</div>
+      <div class="alert-title">Kuzatish Kerak</div>
+      <div class="alert-desc">Brute force, port scanning — 4 soat ichida javob</div>
+    </div>
+    <div class="alert-card low">
+      <div class="alert-level">LOW</div>
+      <div class="alert-title">Qayd Etish</div>
+      <div class="alert-desc">Oddiy anomaliyalar — 24 soat ichida javob</div>
+    </div>
+  </div>
+</section>
+
+<!-- ARTICLES -->
+<section class="section" style="padding-top: 0;">
+  <div class="section-header">
+    <span class="section-tag">> MAQOLALAR</span>
+    <h2 class="section-title">BLUE TEAM MAQOLALARI</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="articles-grid">
+
+    <div class="article-card">
+      <div class="difficulty">
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot"></div>
+        <div class="diff-dot"></div>
+        <div class="diff-dot"></div>
+      </div>
+      <span class="article-tag">SIEM</span>
+      <h3 class="article-title">Splunk Bilan Log Tahlil</h3>
+      <p class="article-desc">Splunk SIEM da hujumni aniqlash — SPL qidiruv tili va dashboard yaratish.</p>
+      <div class="code-snippet">
+        <span class="c-muted"># Splunk SPL query</span><br>
+        <span class="c-blue">index=</span>windows EventCode=4625<br>
+        <span class="c-cyan">| stats count by src_ip</span><br>
+        <span class="c-green">| where count > 10</span>
+      </div>
+      <div class="article-meta">
+        <span>28 MAY 2026 · 15 daq</span>
+        <span class="article-read">O'QI</span>
+      </div>
+    </div>
+
+    <div class="article-card">
+      <div class="difficulty">
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot"></div>
+        <div class="diff-dot"></div>
+      </div>
+      <span class="article-tag">INCIDENT RESPONSE</span>
+      <h3 class="article-title">Ransomware Hujumiga Javob</h3>
+      <p class="article-desc">Ransomware aniqlanganda qanday tezkor choralar ko'rish kerak — bosqichma-bosqich playbook.</p>
+      <div class="code-snippet">
+        <span class="c-muted"># Tarmoqdan izolyatsiya</span><br>
+        <span class="c-blue">netsh</span> advfirewall set<br>
+        <span class="c-cyan">allprofiles state on</span><br>
+        <span class="c-red">→ Zudlik bilan!</span>
+      </div>
+      <div class="article-meta">
+        <span>24 MAY 2026 · 20 daq</span>
+        <span class="article-read">O'QI</span>
+      </div>
+    </div>
+
+    <div class="article-card">
+      <div class="difficulty">
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot"></div>
+      </div>
+      <span class="article-tag">FORENSICS</span>
+      <h3 class="article-title">Volatility: Xotira Tahlili</h3>
+      <p class="article-desc">RAM dump dan zararli jarayonlar, network connections va artifacts topish.</p>
+      <div class="code-snippet">
+        <span class="c-blue">volatility</span> -f mem.dmp<br>
+        <span class="c-cyan">--profile=Win10x64</span><br>
+        <span class="c-green">pslist</span> <span class="c-muted"># jarayonlar</span>
+      </div>
+      <div class="article-meta">
+        <span>20 MAY 2026 · 25 daq</span>
+        <span class="article-read">O'QI</span>
+      </div>
+    </div>
+
+    <div class="article-card">
+      <div class="difficulty">
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot"></div>
+        <div class="diff-dot"></div>
+        <div class="diff-dot"></div>
+      </div>
+      <span class="article-tag">THREAT HUNTING</span>
+      <h3 class="article-title">MITRE ATT&CK Framework</h3>
+      <p class="article-desc">Hujumchilar taktikalarini MITRE ATT&CK yordamida aniqlash va kuzatish.</p>
+      <div class="code-snippet">
+        <span class="c-muted"># T1059 - Command Execution</span><br>
+        <span class="c-blue">powershell.exe</span> -enc ...<br>
+        <span class="c-red">→ Shubhali faoliyat!</span>
+      </div>
+      <div class="article-meta">
+        <span>16 MAY 2026 · 12 daq</span>
+        <span class="article-read">O'QI</span>
+      </div>
+    </div>
+
+    <div class="article-card">
+      <div class="difficulty">
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot"></div>
+        <div class="diff-dot"></div>
+      </div>
+      <span class="article-tag">NETWORK</span>
+      <h3 class="article-title">Wireshark: Tarmoq Tahlili</h3>
+      <p class="article-desc">Wireshark bilan shubhali tarmoq trafigini aniqlash va tahlil qilish.</p>
+      <div class="code-snippet">
+        <span class="c-muted"># Filter: C2 traffic</span><br>
+        <span class="c-blue">ip.dst</span> == 10.10.1.1<br>
+        <span class="c-cyan">&& tcp.port == 4444</span>
+      </div>
+      <div class="article-meta">
+        <span>12 MAY 2026 · 18 daq</span>
+        <span class="article-read">O'QI</span>
+      </div>
+    </div>
+
+    <div class="article-card">
+      <div class="difficulty">
+        <div class="diff-dot active"></div>
+        <div class="diff-dot"></div>
+        <div class="diff-dot"></div>
+        <div class="diff-dot"></div>
+        <div class="diff-dot"></div>
+      </div>
+      <span class="article-tag">HARDENING</span>
+      <h3 class="article-title">Linux Server Mustahkamlash</h3>
+      <p class="article-desc">Linux serverini hujumlardan himoya qilish — CIS Benchmark asosida sozlash.</p>
+      <div class="code-snippet">
+        <span class="c-muted"># SSH hardening</span><br>
+        <span class="c-green">PermitRootLogin</span> no<br>
+        <span class="c-green">PasswordAuth</span> no<br>
+        <span class="c-cyan">AllowUsers</span> admin
+      </div>
+      <div class="article-meta">
+        <span>8 MAY 2026 · 10 daq</span>
+        <span class="article-read">O'QI</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section class="section" style="padding-top: 0;">
+  <div class="section-header">
+    <span class="section-tag">> ARSENAL</span>
+    <h2 class="section-title">BLUE TEAM TOOLLAR</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="tools-grid">
+    <div class="tool-card">
+      <div class="tool-name">SPLUNK</div>
+      <div class="tool-desc">SIEM — log tahlil va hujum aniqlash</div>
+      <div class="tool-cmd">splunk start</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">WIRESHARK</div>
+      <div class="tool-desc">Tarmoq trafigini tahlil qilish</div>
+      <div class="tool-cmd">wireshark &</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">VOLATILITY</div>
+      <div class="tool-desc">RAM xotira forensika tahlili</div>
+      <div class="tool-cmd">volatility -f mem.dmp</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">SURICATA</div>
+      <div class="tool-desc">Network IDS/IPS tizimi</div>
+      <div class="tool-cmd">suricata -i eth0</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">AUTOPSY</div>
+      <div class="tool-desc">Disk forensika va tahlil</div>
+      <div class="tool-cmd">autopsy &</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">WAZUH</div>
+      <div class="tool-desc">Ochiq kodli SIEM va XDR</div>
+      <div class="tool-cmd">wazuh-manager start</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="index.html" class="footer-logo">CYBERUZ</a>
+  <div class="footer-copy">© 2026 CyberUz — Barcha huquqlar himoyalangan</div>
+  <div class="footer-links">
+    <a href="#">GitHub</a>
+    <a href="#">Telegram</a>
+    <a href="#">LinkedIn</a>
+  </div>
+</footer>
+
+</body>
+</html>
