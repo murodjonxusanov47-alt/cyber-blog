@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Red Team — CyberUz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #050a0e;
+      --bg2: #0a1520;
+      --green: #00ff88;
+      --cyan: #00e5ff;
+      --red: #ff2d55;
+      --text: #c8d8e4;
+      --muted: #4a6070;
+      --card: #0d1e2c;
+      --border: #1a3045;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,45,85,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,45,85,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(5,10,14,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 3px;
+      color: var(--green);
+      text-decoration: none;
+      text-shadow: 0 0 20px rgba(0,255,136,0.5);
+    }
+
+    .logo span { color: var(--cyan); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover, .nav-links a.active { color: var(--red); }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      z-index: 1;
+      padding: 120px 4rem 4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .breadcrumb {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.5s 0.1s forwards;
+    }
+
+    .breadcrumb a { color: var(--green); text-decoration: none; }
+    .breadcrumb span { color: var(--red); }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,45,85,0.1);
+      border: 1px solid var(--red);
+      padding: 6px 16px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--red);
+      letter-spacing: 3px;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.5s 0.2s forwards;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--red);
+      animation: pulse-red 1.5s infinite;
+    }
+
+    @keyframes pulse-red {
+      0%, 100% { box-shadow: 0 0 6px var(--red); }
+      50% { box-shadow: none; }
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      line-height: 0.95;
+      letter-spacing: 3px;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.5s 0.3s forwards;
+    }
+
+    .hero h1 .t1 { color: var(--red); text-shadow: 0 0 40px rgba(255,45,85,0.4); }
+    .hero h1 .t2 { color: #fff; }
+    .hero h1 .t3 { color: transparent; -webkit-text-stroke: 1px var(--muted); }
+
+    .hero-desc {
+      max-width: 600px;
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.5s 0.4s forwards;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.5s 0.5s forwards;
+    }
+
+    .h-stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      color: var(--red);
+      line-height: 1;
+    }
+
+    .h-stat-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+    }
+
+    /* METHODOLOGY */
+    .section {
+      position: relative;
+      z-index: 1;
+      padding: 4rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      letter-spacing: 3px;
+      color: #fff;
+    }
+
+    .section-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--red);
+      letter-spacing: 3px;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+
+    /* METHODOLOGY STEPS */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      margin-bottom: 4rem;
+    }
+
+    .step {
+      background: var(--card);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .step:hover { background: #0f2335; }
+
+    .step-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 5rem;
+      color: rgba(255,45,85,0.08);
+      position: absolute;
+      top: -10px; right: 10px;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .step-icon {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--red);
+      letter-spacing: 2px;
+      border: 1px solid var(--red);
+      padding: 3px 10px;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+
+    .step-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      color: #fff;
+      letter-spacing: 1px;
+      margin-bottom: 0.8rem;
+    }
+
+    .step-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .step-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tool-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      background: rgba(255,45,85,0.1);
+      color: var(--red);
+      border: 1px solid rgba(255,45,85,0.3);
+    }
+
+    /* ARTICLES */
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .article-card {
+      background: var(--card);
+      padding: 2rem;
+      cursor: pointer;
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .article-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--red);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+
+    .article-card:hover { background: #0f2335; }
+    .article-card:hover::after { transform: scaleX(1); }
+
+    .article-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      padding: 3px 10px;
+      border: 1px solid var(--red);
+      color: var(--red);
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+
+    .article-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      color: #fff;
+      letter-spacing: 1px;
+      line-height: 1.2;
+      margin-bottom: 0.8rem;
+    }
+
+    .article-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Code snippet */
+    .code-snippet {
+      background: #050a0e;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--red);
+      padding: 1rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .c-red { color: var(--red); }
+    .c-green { color: var(--green); }
+    .c-cyan { color: var(--cyan); }
+    .c-muted { color: var(--muted); }
+
+    .article-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .article-read { color: var(--red); }
+    .article-read::after { content: ' →'; }
+
+    /* DIFFICULTY */
+    .difficulty {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 0.5rem;
+    }
+
+    .diff-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+
+    .diff-dot.active { background: var(--red); }
+
+    /* TOOLS SECTION */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .tool-card {
+      background: var(--card);
+      padding: 1.5rem;
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+
+    .tool-card:hover { background: #0f2335; }
+
+    .tool-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      color: var(--red);
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+    }
+
+    .tool-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 0.8rem;
+    }
+
+    .tool-cmd {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--green);
+      background: rgba(0,255,136,0.05);
+      padding: 4px 8px;
+    }
+
+    /* FOOTER */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      color: var(--green);
+      letter-spacing: 3px;
+      text-decoration: none;
+    }
+
+    .footer-copy {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-links a {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: var(--green); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 1.5rem 3rem; }
+      .hero-stats { gap: 1.5rem; }
+      .section { padding: 3rem 1.5rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">Cyber<span>Uz</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">BOSH SAHIFA</a></li>
+    <li><a href="red-team.html" class="active">RED TEAM</a></li>
+    <li><a href="#">BLUE TEAM</a></li>
+    <li><a href="#">TOOLS</a></li>
+    <li><a href="#">CTF</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="breadcrumb">
+    <a href="index.html">BOSH SAHIFA</a> / <span>RED TEAM</span>
+  </div>
+  <div class="hero-badge">OFFENSIVE SECURITY</div>
+  <h1>
+    <div class="t1">RED</div>
+    <div class="t2">TEAM</div>
+    <div class="t3">OPERATIONS</div>
+  </h1>
+  <p class="hero-desc">
+    Hujum texnikalar, exploitation metodlar, privilege escalation va real Red Team operatsiyalari — amaliy ko'rsatmalar va CTF writeuplar bilan.
+  </p>
+  <div class="hero-stats">
+    <div>
+      <div class="h-stat-num">34</div>
+      <div class="h-stat-label">MAQOLALAR</div>
+    </div>
+    <div>
+      <div class="h-stat-num">12</div>
+      <div class="h-stat-label">CTF WRITEUP</div>
+    </div>
+    <div>
+      <div class="h-stat-num">OSCP</div>
+      <div class="h-stat-label">MUALLIF</div>
+    </div>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-tag">> METHODOLOGY</span>
+    <h2 class="section-title">RED TEAM BOSQICHLARI</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-icon">RECON</div>
+      <h3 class="step-title">Razvedka</h3>
+      <p class="step-desc">Maqsad tizim haqida maksimal ma'lumot yig'ish — passiv va aktiv usullar bilan.</p>
+      <div class="step-tools">
+        <span class="tool-tag">theHarvester</span>
+        <span class="tool-tag">Shodan</span>
+        <span class="tool-tag">Nmap</span>
+        <span class="tool-tag">OSINT</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-icon">SCAN</div>
+      <h3 class="step-title">Skanerlash</h3>
+      <p class="step-desc">Portlar, xizmatlar va zaifliklarni aniqlash uchun chuqur skanerlash.</p>
+      <div class="step-tools">
+        <span class="tool-tag">Nmap -A</span>
+        <span class="tool-tag">Nikto</span>
+        <span class="tool-tag">Gobuster</span>
+        <span class="tool-tag">Masscan</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-icon">EXPLOIT</div>
+      <h3 class="step-title">Ekspluatatsiya</h3>
+      <p class="step-desc">Topilgan zaifliklardan foydalanib tizimga dastlabki kirish.</p>
+      <div class="step-tools">
+        <span class="tool-tag">Metasploit</span>
+        <span class="tool-tag">SQLmap</span>
+        <span class="tool-tag">Burp Suite</span>
+        <span class="tool-tag">Manual</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-icon">PRIVESC</div>
+      <h3 class="step-title">Huquq Oshirish</h3>
+      <p class="step-desc">Oddiy foydalanuvchidan root/admin huquqiga chiqish.</p>
+      <div class="step-tools">
+        <span class="tool-tag">LinPEAS</span>
+        <span class="tool-tag">WinPEAS</span>
+        <span class="tool-tag">SUID</span>
+        <span class="tool-tag">Sudo -l</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">05</div>
+      <div class="step-icon">LATERAL</div>
+      <h3 class="step-title">Lateral Harakat</h3>
+      <p class="step-desc">Tarmoqdagi boshqa tizimlarga o'tish va dominance qilish.</p>
+      <div class="step-tools">
+        <span class="tool-tag">Pass-the-Hash</span>
+        <span class="tool-tag">BloodHound</span>
+        <span class="tool-tag">Mimikatz</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">06</div>
+      <div class="step-icon">REPORT</div>
+      <h3 class="step-title">Hisobot</h3>
+      <p class="step-desc">Topilgan zaifliklar, ekspluatatsiya yo'li va tavsiyalar hujjatlashtirish.</p>
+      <div class="step-tools">
+        <span class="tool-tag">Markdown</span>
+        <span class="tool-tag">PoC</span>
+        <span class="tool-tag">CVSS</span>
+        <span class="tool-tag">Remediation</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARTICLES -->
+<section class="section" style="padding-top: 0;">
+  <div class="section-header">
+    <span class="section-tag">> MAQOLALAR</span>
+    <h2 class="section-title">RED TEAM MAQOLALARI</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="articles-grid">
+
+    <!-- Article 1 -->
+    <div class="article-card">
+      <div class="difficulty">
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot"></div>
+        <div class="diff-dot"></div>
+      </div>
+      <span class="article-tag">PRIVILEGE ESCALATION</span>
+      <h3 class="article-title">Linux'da Root Olishning 7 Ta Usuli</h3>
+      <p class="article-desc">SUID bitlari, sudo misuse, kernel exploitlar va cron job'lardan foydalanib root huquqiga chiqish.</p>
+      <div class="code-snippet">
+        <span class="c-muted"># SUID topish</span><br>
+        <span class="c-green">find</span> / -perm -4000 2>/dev/null<br>
+        <span class="c-cyan">/usr/bin/python3</span> <span class="c-red">← VULN!</span>
+      </div>
+      <div class="article-meta">
+        <span>29 MAY 2026 · 15 daq</span>
+        <span class="article-read">O'QI</span>
+      </div>
+    </div>
+
+    <!-- Article 2 -->
+    <div class="article-card">
+      <div class="difficulty">
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot"></div>
+        <div class="diff-dot"></div>
+        <div class="diff-dot"></div>
+      </div>
+      <span class="article-tag">RECON</span>
+      <h3 class="article-title">Nmap: To'liq Qo'llanma</h3>
+      <p class="article-desc">Nmap ning barcha flaglari, skript engine va amaliy misollar bilan to'liq qo'llanma.</p>
+      <div class="code-snippet">
+        <span class="c-muted"># Barcha portlar + OS</span><br>
+        <span class="c-green">nmap</span> -A -p- -T4 target<br>
+        <span class="c-muted"># Stealth scan</span><br>
+        <span class="c-green">nmap</span> -sS -Pn target
+      </div>
+      <div class="article-meta">
+        <span>25 MAY 2026 · 10 daq</span>
+        <span class="article-read">O'QI</span>
+      </div>
+    </div>
+
+    <!-- Article 3 -->
+    <div class="article-card">
+      <div class="difficulty">
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot"></div>
+      </div>
+      <span class="article-tag">ACTIVE DIRECTORY</span>
+      <h3 class="article-title">Kerberoasting Hujumi</h3>
+      <p class="article-desc">Active Directory'da service account parollarini crack qilish — Kerberoasting texnikasi.</p>
+      <div class="code-snippet">
+        <span class="c-green">GetUserSPNs.py</span> -request<br>
+        <span class="c-cyan">domain/user:pass</span><br>
+        <span class="c-red">→ TGS hash topildi!</span>
+      </div>
+      <div class="article-meta">
+        <span>22 MAY 2026 · 20 daq</span>
+        <span class="article-read">O'QI</span>
+      </div>
+    </div>
+
+    <!-- Article 4 -->
+    <div class="article-card">
+      <div class="difficulty">
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+      </div>
+      <span class="article-tag">POST EXPLOITATION</span>
+      <h3 class="article-title">Mimikatz: Credential Dumping</h3>
+      <p class="article-desc">Windows tizimidan parollar va hash'larni olish — Mimikatz ning barcha buyruqlari.</p>
+      <div class="code-snippet">
+        <span class="c-red">mimikatz #</span><br>
+        <span class="c-green">sekurlsa::</span>logonpasswords<br>
+        <span class="c-cyan">→ NTLM hash: a87f...</span>
+      </div>
+      <div class="article-meta">
+        <span>18 MAY 2026 · 25 daq</span>
+        <span class="article-read">O'QI</span>
+      </div>
+    </div>
+
+    <!-- Article 5 -->
+    <div class="article-card">
+      <div class="difficulty">
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot"></div>
+        <div class="diff-dot"></div>
+        <div class="diff-dot"></div>
+      </div>
+      <span class="article-tag">METASPLOIT</span>
+      <h3 class="article-title">MSF Console: Yangi Boshlovchilar Uchun</h3>
+      <p class="article-desc">Metasploit Framework asosiy buyruqlari, payload tanlash va Meterpreter sessiyasi.</p>
+      <div class="code-snippet">
+        <span class="c-red">msf6 ></span> <span class="c-green">search</span> eternalblue<br>
+        <span class="c-red">msf6 ></span> <span class="c-green">use</span> 0<br>
+        <span class="c-red">msf6 ></span> <span class="c-cyan">set RHOSTS</span> 10.10.1.1
+      </div>
+      <div class="article-meta">
+        <span>14 MAY 2026 · 12 daq</span>
+        <span class="article-read">O'QI</span>
+      </div>
+    </div>
+
+    <!-- Article 6 -->
+    <div class="article-card">
+      <div class="difficulty">
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot active"></div>
+        <div class="diff-dot"></div>
+        <div class="diff-dot"></div>
+      </div>
+      <span class="article-tag">WEB HACKING</span>
+      <h3 class="article-title">SQL Injection: Manual va SQLmap</h3>
+      <p class="article-desc">Qo'lda SQLi test qilish va SQLmap tool bilan ma'lumotlar bazasini dump qilish.</p>
+      <div class="code-snippet">
+        <span class="c-muted"># Manual test</span><br>
+        <span class="c-cyan">' OR 1=1--</span><br>
+        <span class="c-muted"># SQLmap</span><br>
+        <span class="c-green">sqlmap</span> -u "url?id=1" --dbs
+      </div>
+      <div class="article-meta">
+        <span>10 MAY 2026 · 18 daq</span>
+        <span class="article-read">O'QI</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section class="section" style="padding-top: 0;">
+  <div class="section-header">
+    <span class="section-tag">> ARSENAL</span>
+    <h2 class="section-title">RED TEAM TOOLLAR</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="tools-grid">
+    <div class="tool-card">
+      <div class="tool-name">NMAP</div>
+      <div class="tool-desc">Port scanner va network discovery uchun eng mashhur tool</div>
+      <div class="tool-cmd">nmap -A -p- target</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">METASPLOIT</div>
+      <div class="tool-desc">Exploitation framework — 2000+ exploit moduli</div>
+      <div class="tool-cmd">msfconsole</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">BURP SUITE</div>
+      <div class="tool-desc">Web application pentesting uchun asosiy tool</div>
+      <div class="tool-cmd">burpsuite &</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">BLOODHOUND</div>
+      <div class="tool-desc">Active Directory attack path vizualizatsiya</div>
+      <div class="tool-cmd">bloodhound &</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">MIMIKATZ</div>
+      <div class="tool-desc">Windows credential dumping va pass-the-hash</div>
+      <div class="tool-cmd">mimikatz.exe</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">SQLMAP</div>
+      <div class="tool-desc">Avtomatik SQL injection va database takeover</div>
+      <div class="tool-cmd">sqlmap -u URL --dbs</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="index.html" class="footer-logo">CYBERUZ</a>
+  <div class="footer-copy">© 2026 CyberUz — Barcha huquqlar himoyalangan</div>
+  <div class="footer-links">
+    <a href="#">GitHub</a>
+    <a href="#">Telegram</a>
+    <a href="#">LinkedIn</a>
+  </div>
+</footer>
+
+</body>
+</html>
