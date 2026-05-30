@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CTF Writeups — CyberUz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #050a0e;
+      --green: #00ff88;
+      --cyan: #00e5ff;
+      --yellow: #ffd60a;
+      --red: #ff2d55;
+      --purple: #bf5af2;
+      --text: #c8d8e4;
+      --muted: #4a6070;
+      --card: #0d1e2c;
+      --border: #1a3045;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(191,90,242,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(191,90,242,0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(5,10,14,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 3px;
+      color: var(--green);
+      text-decoration: none;
+      text-shadow: 0 0 20px rgba(0,255,136,0.5);
+    }
+
+    .logo span { color: var(--cyan); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--purple); }
+    .nav-links a.active { color: var(--purple); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 2px;
+      background: var(--green);
+      transition: all 0.3s;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 60px; left: 0; right: 0;
+      background: rgba(5,10,14,0.98);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      z-index: 99;
+      flex-direction: column;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.3s;
+    }
+
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--green); }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      z-index: 1;
+      padding: 120px 4rem 4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .breadcrumb {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .breadcrumb a { color: var(--green); text-decoration: none; }
+    .breadcrumb span { color: var(--purple); }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(191,90,242,0.1);
+      border: 1px solid var(--purple);
+      padding: 6px 16px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--purple);
+      letter-spacing: 3px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      line-height: 0.95;
+      letter-spacing: 3px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 .t1 { color: var(--purple); text-shadow: 0 0 40px rgba(191,90,242,0.4); }
+    .hero h1 .t2 { color: #fff; }
+    .hero h1 .t3 { color: transparent; -webkit-text-stroke: 1px var(--muted); }
+
+    .hero-desc {
+      max-width: 600px;
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+    }
+
+    .h-stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      color: var(--purple);
+      line-height: 1;
+    }
+
+    .h-stat-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+    }
+
+    /* SECTION */
+    .section {
+      position: relative;
+      z-index: 1;
+      padding: 4rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      letter-spacing: 3px;
+      color: #fff;
+    }
+
+    .section-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--purple);
+      letter-spacing: 3px;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+
+    /* PLATFORM TABS */
+    .platform-tabs {
+      display: flex;
+      gap: 1px;
+      background: var(--border);
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .platform-tab {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--card);
+      color: var(--muted);
+      cursor: pointer;
+      letter-spacing: 2px;
+      transition: all 0.3s;
+      border: none;
+    }
+
+    .platform-tab:hover { background: #0f2335; color: var(--purple); }
+    .platform-tab.active { background: var(--purple); color: #fff; }
+
+    /* CTF GRID */
+    .ctf-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .ctf-card {
+      background: var(--card);
+      padding: 2rem;
+      cursor: pointer;
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ctf-card:hover { background: #0f2335; }
+
+    .ctf-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 0;
+      background: var(--purple);
+      transition: height 0.4s;
+    }
+
+    .ctf-card:hover::before { height: 100%; }
+
+    .ctf-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .ctf-platform {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      padding: 3px 8px;
+      border: 1px solid;
+      letter-spacing: 1px;
+    }
+
+    .platform-htb { color: var(--green); border-color: var(--green); }
+    .platform-thm { color: var(--cyan); border-color: var(--cyan); }
+    .platform-pg { color: var(--yellow); border-color: var(--yellow); }
+    .platform-vh { color: var(--red); border-color: var(--red); }
+
+    .ctf-difficulty {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      padding: 3px 8px;
+      letter-spacing: 1px;
+    }
+
+    .diff-easy { color: var(--green); background: rgba(0,255,136,0.1); }
+    .diff-medium { color: var(--yellow); background: rgba(255,214,10,0.1); }
+    .diff-hard { color: var(--red); background: rgba(255,45,85,0.1); }
+    .diff-insane { color: var(--purple); background: rgba(191,90,242,0.1); }
+
+    .ctf-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      color: #fff;
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+    }
+
+    .ctf-os {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .os-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+    }
+
+    .os-linux { background: var(--yellow); }
+    .os-windows { background: var(--cyan); }
+
+    .ctf-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 1rem;
+    }
+
+    .ctf-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      padding: 2px 8px;
+      background: rgba(191,90,242,0.08);
+      color: var(--purple);
+      border: 1px solid rgba(191,90,242,0.2);
+    }
+
+    .ctf-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+    }
+
+    .ctf-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+    }
+
+    .ctf-read {
+      color: var(--purple);
+    }
+
+    .ctf-read::after { content: ' →'; }
+
+    .ctf-points {
+      color: var(--yellow);
+    }
+
+    /* FLAG ANIMATION */
+    .flag-box {
+      background: rgba(0,255,136,0.05);
+      border: 1px solid rgba(0,255,136,0.2);
+      border-left: 3px solid var(--green);
+      padding: 0.8rem 1rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .flag-label {
+      color: var(--muted);
+      font-size: 0.65rem;
+      margin-bottom: 4px;
+      letter-spacing: 2px;
+    }
+
+    .flag-value { color: var(--green); }
+
+    /* STATS GRID */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      margin-bottom: 4rem;
+    }
+
+    .stat-card {
+      background: var(--card);
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      color: var(--purple);
+      line-height: 1;
+      text-shadow: 0 0 20px rgba(191,90,242,0.3);
+    }
+
+    .stat-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      margin-top: 0.4rem;
+    }
+
+    /* FOOTER */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      color: var(--green);
+      letter-spacing: 3px;
+      text-decoration: none;
+    }
+
+    .footer-copy {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-links a {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: var(--green); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero { padding: 100px 1.5rem 3rem; }
+      .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+      .section { padding: 3rem 1.5rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Cyber<span>Uz</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">BOSH SAHIFA</a></li>
+    <li><a href="red-team.html">RED TEAM</a></li>
+    <li><a href="blue-team.html">BLUE TEAM</a></li>
+    <li><a href="tools.html">TOOLS</a></li>
+    <li><a href="ctf.html" class="active">CTF</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">BOSH SAHIFA</a>
+  <a href="red-team.html">RED TEAM</a>
+  <a href="blue-team.html">BLUE TEAM</a>
+  <a href="tools.html">TOOLS</a>
+  <a href="ctf.html">CTF</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="breadcrumb">
+    <a href="index.html">BOSH SAHIFA</a> / <span>CTF WRITEUPS</span>
+  </div>
+  <div class="hero-badge">🚩 CAPTURE THE FLAG</div>
+  <h1>
+    <div class="t1">CTF</div>
+    <div class="t2">WRITEUPS</div>
+    <div class="t3">SOLUTIONS</div>
+  </h1>
+  <p class="hero-desc">
+    HackTheBox, TryHackMe va boshqa CTF platformalardagi mashinalar yechimi — bosqichma-bosqich walkthrough va amaliy tahlil.
+  </p>
+  <div class="hero-stats">
+    <div>
+      <div class="h-stat-num">47</div>
+      <div class="h-stat-label">WRITEUPLAR</div>
+    </div>
+    <div>
+      <div class="h-stat-num">Pro</div>
+      <div class="h-stat-label">HTB RANK</div>
+    </div>
+    <div>
+      <div class="h-stat-num">TOP 5%</div>
+      <div class="h-stat-label">THM RANK</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-num">23</div>
+      <div class="stat-label">HACKTHEBOX</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">15</div>
+      <div class="stat-label">TRYHACKME</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">9</div>
+      <div class="stat-label">BOSHQALAR</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">18</div>
+      <div class="stat-label">LINUX</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">14</div>
+      <div class="stat-label">WINDOWS</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">15</div>
+      <div class="stat-label">WEB</div>
+    </div>
+  </div>
+
+  <!-- PLATFORM TABS -->
+  <div class="section-header">
+    <span class="section-tag">> WRITEUPS</span>
+    <h2 class="section-title">CTF WRITEUPLAR</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="platform-tabs">
+    <button class="platform-tab active">HAMMASI</button>
+    <button class="platform-tab">HACKTHEBOX</button>
+    <button class="platform-tab">TRYHACKME</button>
+    <button class="platform-tab">LINUX</button>
+    <button class="platform-tab">WINDOWS</button>
+  </div>
+
+  <div class="ctf-grid">
+
+    <!-- HTB Perfection -->
+    <div class="ctf-card">
+      <div class="ctf-header">
+        <span class="ctf-platform platform-htb">HACKTHEBOX</span>
+        <span class="ctf-difficulty diff-easy">EASY</span>
+      </div>
+      <div class="ctf-name">PERFECTION</div>
+      <div class="ctf-os">
+        <div class="os-dot os-linux"></div>
+        LINUX
+      </div>
+      <div class="ctf-tags">
+        <span class="ctf-tag">SSTI</span>
+        <span class="ctf-tag">RCE</span>
+        <span class="ctf-tag">RUBY</span>
+        <span class="ctf-tag">HASHCAT</span>
+      </div>
+      <p class="ctf-desc">Server-Side Template Injection orqali Remote Code Execution, so'ng parol cracking bilan root.</p>
+      <div class="flag-box">
+        <div class="flag-label">USER FLAG</div>
+        <div class="flag-value">HTB{s3rv3r_s1d3_t3mpl4t3_1nj3ct10n}</div>
+      </div>
+      <div class="ctf-footer">
+        <span>22 MAY 2026</span>
+        <span class="ctf-points">20 pts</span>
+        <span class="ctf-read">WRITEUP</span>
+      </div>
+    </div>
+
+    <!-- HTB BoardLight -->
+    <div class="ctf-card">
+      <div class="ctf-header">
+        <span class="ctf-platform platform-htb">HACKTHEBOX</span>
+        <span class="ctf-difficulty diff-easy">EASY</span>
+      </div>
+      <div class="ctf-name">BOARDLIGHT</div>
+      <div class="ctf-os">
+        <div class="os-dot os-linux"></div>
+        LINUX
+      </div>
+      <div class="ctf-tags">
+        <span class="ctf-tag">DOLIBARR</span>
+        <span class="ctf-tag">CVE</span>
+        <span class="ctf-tag">SUID</span>
+      </div>
+      <p class="ctf-desc">Dolibarr CMS'da CVE-2023-30253 exploit, SUID bit bilan privilege escalation.</p>
+      <div class="flag-box">
+        <div class="flag-label">USER FLAG</div>
+        <div class="flag-value">HTB{d0l1b4rr_rce_pwn3d}</div>
+      </div>
+      <div class="ctf-footer">
+        <span>18 MAY 2026</span>
+        <span class="ctf-points">20 pts</span>
+        <span class="ctf-read">WRITEUP</span>
+      </div>
+    </div>
+
+    <!-- HTB Active -->
+    <div class="ctf-card">
+      <div class="ctf-header">
+        <span class="ctf-platform platform-htb">HACKTHEBOX</span>
+        <span class="ctf-difficulty diff-easy">EASY</span>
+      </div>
+      <div class="ctf-name">ACTIVE</div>
+      <div class="ctf-os">
+        <div class="os-dot os-windows"></div>
+        WINDOWS
+      </div>
+      <div class="ctf-tags">
+        <span class="ctf-tag">SMB</span>
+        <span class="ctf-tag">KERBEROASTING</span>
+        <span class="ctf-tag">GPP</span>
+        <span class="ctf-tag">AD</span>
+      </div>
+      <p class="ctf-desc">SMB anonymous access, GPP parol, Kerberoasting bilan Administrator huquqi.</p>
+      <div class="flag-box">
+        <div class="flag-label">ROOT FLAG</div>
+        <div class="flag-value">HTB{k3rb3r04st1ng_4dm1n}</div>
+      </div>
+      <div class="ctf-footer">
+        <span>14 MAY 2026</span>
+        <span class="ctf-points">20 pts</span>
+        <span class="ctf-read">WRITEUP</span>
+      </div>
+    </div>
+
+    <!-- THM Advent of Cyber -->
+    <div class="ctf-card">
+      <div class="ctf-header">
+        <span class="ctf-platform platform-thm">TRYHACKME</span>
+        <span class="ctf-difficulty diff-easy">EASY</span>
+      </div>
+      <div class="ctf-name">ADVENT OF CYBER</div>
+      <div class="ctf-os">
+        <div class="os-dot os-linux"></div>
+        LINUX
+      </div>
+      <div class="ctf-tags">
+        <span class="ctf-tag">WEB</span>
+        <span class="ctf-tag">OSINT</span>
+        <span class="ctf-tag">FORENSICS</span>
+        <span class="ctf-tag">SCRIPTING</span>
+      </div>
+      <p class="ctf-desc">25 kunlik challenge — web, OSINT, forensics, scripting va network tahlil.</p>
+      <div class="flag-box">
+        <div class="flag-label">FINAL FLAG</div>
+        <div class="flag-value">THM{4dv3nt_0f_cyb3r_2026}</div>
+      </div>
+      <div class="ctf-footer">
+        <span>10 MAY 2026</span>
+        <span class="ctf-points">100 pts</span>
+        <span class="ctf-read">WRITEUP</span>
+      </div>
+    </div>
+
+    <!-- HTB MonitorsThree -->
+    <div class="ctf-card">
+      <div class="ctf-header">
+        <span class="ctf-platform platform-htb">HACKTHEBOX</span>
+        <span class="ctf-difficulty diff-medium">MEDIUM</span>
+      </div>
+      <div class="ctf-name">MONITORSTHREE</div>
+      <div class="ctf-os">
+        <div class="os-dot os-linux"></div>
+        LINUX
+      </div>
+      <div class="ctf-tags">
+        <span class="ctf-tag">SQLi</span>
+        <span class="ctf-tag">CACTI</span>
+        <span class="ctf-tag">DOCKER</span>
+        <span class="ctf-tag">DUPLICATI</span>
+      </div>
+      <p class="ctf-desc">SQL injection orqali credential olish, Cacti RCE, Docker escape va Duplicati backup exploit.</p>
+      <div class="flag-box">
+        <div class="flag-label">USER FLAG</div>
+        <div class="flag-value">HTB{c4ct1_rce_d0ck3r_3sc4p3}</div>
+      </div>
+      <div class="ctf-footer">
+        <span>6 MAY 2026</span>
+        <span class="ctf-points">30 pts</span>
+        <span class="ctf-read">WRITEUP</span>
+      </div>
+    </div>
+
+    <!-- HTB Compiled -->
+    <div class="ctf-card">
+      <div class="ctf-header">
+        <span class="ctf-platform platform-htb">HACKTHEBOX</span>
+        <span class="ctf-difficulty diff-medium">MEDIUM</span>
+      </div>
+      <div class="ctf-name">COMPILED</div>
+      <div class="ctf-os">
+        <div class="os-dot os-windows"></div>
+        WINDOWS
+      </div>
+      <div class="ctf-tags">
+        <span class="ctf-tag">GITEA</span>
+        <span class="ctf-tag">RCE</span>
+        <span class="ctf-tag">VS CODE</span>
+        <span class="ctf-tag">PRIVESC</span>
+      </div>
+      <p class="ctf-desc">Gitea CVE exploit, Visual Studio Code extension orqali RCE va Windows privilege escalation.</p>
+      <div class="flag-box">
+        <div class="flag-label">ROOT FLAG</div>
+        <div class="flag-value">HTB{g1t34_rce_vs_c0d3}</div>
+      </div>
+      <div class="ctf-footer">
+        <span>1 MAY 2026</span>
+        <span class="ctf-points">30 pts</span>
+        <span class="ctf-read">WRITEUP</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="index.html" class="footer-logo">CYBERUZ</a>
+  <div class="footer-copy">© 2026 CyberUz — Barcha huquqlar himoyalangan</div>
+  <div class="footer-links">
+    <a href="#">GitHub</a>
+    <a href="#">Telegram</a>
+    <a href="#">LinkedIn</a>
+  </div>
+</footer>
+
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const hamburger = document.getElementById('hamburger');
+  menu.classList.toggle('open');
+  hamburger.classList.toggle('open');
+}
+
+// Platform tab filter
+const tabs = document.querySelectorAll('.platform-tab');
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
