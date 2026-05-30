@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="uz"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login — CyberUz</title>
-<link href="./login_files/css2" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden}
@@ -77,10 +79,10 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 </style>
 </head>
 <body>
-<canvas id="matrix" width="1528" height="732"></canvas>
+<canvas id="matrix"></canvas>
 <div class="wrap">
   <div class="topbar">
-    <a href="file:///C:/Users/quettabyte/Downloads/index.html" class="logo">Cyber<span>Uz</span></a>
+    <a href="index.html" class="logo">Cyber<span>Uz</span></a>
     <div class="secure"><div class="dot"></div>SECURE CONNECTION</div>
   </div>
   <div class="terminal">
@@ -100,11 +102,11 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
         <div class="hsub">// CYBERUZ SECURE LOGIN SYSTEM</div>
       </div>
       <div class="tabs">
-        <button class="tab" onclick="sw(&#39;login&#39;)">[ KIRISH ]</button>
-        <button class="tab on" onclick="sw(&#39;reg&#39;)">[ RO'YXAT ]</button>
+        <button class="tab on" onclick="sw('login')">[ KIRISH ]</button>
+        <button class="tab" onclick="sw('reg')">[ RO'YXAT ]</button>
       </div>
       <div class="alert" id="al"></div>
-      <div id="loginForm" class="form" style="display: none;">
+      <div id="loginForm" class="form">
         <div class="fg">
           <label class="fl">EMAIL</label>
           <input class="fi" type="email" id="le" placeholder="hacker@cyberuz.uz" autocomplete="off">
@@ -115,17 +117,17 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
         </div>
         <div class="frow">
           <label class="cbwrap"><input type="checkbox"><div class="cb"></div><span>ESLAB QOL</span></label>
-          <a href="file:///C:/Users/quettabyte/Downloads/login_8.html#" class="flink">PAROLNI UNUTDIM?</a>
+          <a href="#" class="flink">PAROLNI UNUTDIM?</a>
         </div>
         <button class="btn" id="lbtn" onclick="doLogin()">[ KIRISH ]</button>
         <div class="div">— OR —</div>
         <button class="gbtn" onclick="doGithub()">
-          <svg class="gico" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .322.216.694.825.576C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"></path></svg>
+          <svg class="gico" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .322.216.694.825.576C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/></svg>
           GITHUB BILAN KIRISH
         </button>
-        <div class="note">Akkaunt yo'qmi? <a href="file:///C:/Users/quettabyte/Downloads/login_8.html#" onclick="sw(&#39;reg&#39;)">Ro'yxatdan o'ting</a></div>
+        <div class="note">Akkaunt yo'qmi? <a href="#" onclick="sw('reg')">Ro'yxatdan o'ting</a></div>
       </div>
-      <div id="regForm" class="form" style="display: block;">
+      <div id="regForm" class="form">
         <div class="fg">
           <label class="fl">USERNAME</label>
           <input class="fi" type="text" id="ru" placeholder="h4cker_uz" autocomplete="off">
@@ -142,10 +144,10 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
         <button class="btn" id="rbtn" onclick="doReg()">[ RO'YXATDAN O'TISH ]</button>
         <div class="div">— OR —</div>
         <button class="gbtn" onclick="doGithub()">
-          <svg class="gico" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .322.216.694.825.576C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"></path></svg>
+          <svg class="gico" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .322.216.694.825.576C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/></svg>
           GITHUB BILAN RO'YXAT
         </button>
-        <div class="note">Akkaunt bormi? <a href="file:///C:/Users/quettabyte/Downloads/login_8.html#" onclick="sw(&#39;login&#39;)">Kirish</a></div>
+        <div class="note">Akkaunt bormi? <a href="#" onclick="sw('login')">Kirish</a></div>
       </div>
     </div>
   </div>
@@ -155,124 +157,28 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
     <span>v2.6</span>
   </div>
 </div>
-<script src="./login_files/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var SURL='https://lmlffvhunmzbwqclyjld.supabase.co';
 var SKEY='sb_publishable_KEinIeXIT9HSQEcW9FbeoA_s4octV20';
 var sb=supabase.createClient(SURL,SKEY);
-
 var c=document.getElementById('matrix');
 var x=c.getContext('2d');
 c.width=window.innerWidth;c.height=window.innerHeight;
 var cols=Math.floor(c.width/16);
 var drops=[];for(var i=0;i<cols;i++)drops[i]=1;
 var ch='01ABCDEF0123456789';
-function mat(){
-  x.fillStyle='rgba(0,0,0,0.05)';
-  x.fillRect(0,0,c.width,c.height);
-  x.fillStyle='#00ff41';
-  x.font='14px monospace';
-  for(var i=0;i<drops.length;i++){
-    x.fillText(ch[Math.floor(Math.random()*ch.length)],i*16,drops[i]*16);
-    if(drops[i]*16>c.height&&Math.random()>0.975)drops[i]=0;
-    drops[i]++;
-  }
-}
+function mat(){x.fillStyle='rgba(0,0,0,0.05)';x.fillRect(0,0,c.width,c.height);x.fillStyle='#00ff41';x.font='14px monospace';for(var i=0;i<drops.length;i++){x.fillText(ch[Math.floor(Math.random()*ch.length)],i*16,drops[i]*16);if(drops[i]*16>c.height&&Math.random()>0.975)drops[i]=0;drops[i]++;}}
 setInterval(mat,50);
-
-function sw(t){
-  document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('on')});
-  document.getElementById('loginForm').style.display='none';
-  document.getElementById('regForm').style.display='none';
-  hideAl();
-  if(t==='login'){
-    document.getElementById('loginForm').style.display='block';
-    document.querySelectorAll('.tab')[0].classList.add('on');
-  } else {
-    document.getElementById('regForm').style.display='block';
-    document.querySelectorAll('.tab')[1].classList.add('on');
-  }
-}
-
-function showAl(m,t){
-  var b=document.getElementById('al');
-  b.textContent=m;
-  b.className='alert '+(t||'err');
-}
-function hideAl(){
-  document.getElementById('al').className='alert';
-}
-
-function strength(v){
-  ['s1','s2','s3','s4'].forEach(function(s){document.getElementById(s).className='ss'});
-  if(!v)return;
-  var sc=0;
-  if(v.length>=8)sc++;
-  if(/[A-Z]/.test(v))sc++;
-  if(/[0-9]/.test(v))sc++;
-  if(/[^A-Za-z0-9]/.test(v))sc++;
-  var cl=sc<=1?'w':sc<=2?'m':'s';
-  for(var i=0;i<sc;i++)document.getElementById(['s1','s2','s3','s4'][i]).classList.add(cl);
-}
-
-async function doLogin(){
-  var e=document.getElementById('le').value.trim();
-  var p=document.getElementById('lp').value;
-  var btn=document.getElementById('lbtn');
-  if(!e||!p){showAl('Email va parol kiriting!');return;}
-  btn.textContent='[ TEKSHIRILMOQDA... ]';btn.disabled=true;hideAl();
-  try{
-    var r=await sb.auth.signInWithPassword({email:e,password:p});
-    if(r.error)throw r.error;
-    var pr=await sb.from('profiles').select('role').eq('id',r.data.user.id).single();
-    var isAdmin=pr.data&&pr.data.role==='admin';
-    showAl('KIRISH MUVAFFAQIYATLI! '+(isAdmin?'[ADMIN]':'[USER]'),'suc');
-    localStorage.setItem('cyberuz_role',isAdmin?'admin':'user');
-    setTimeout(function(){window.location.href=isAdmin?'admin.html':'index.html';},1500);
-  }catch(err){
-    showAl('XATO: '+(err.message==='Invalid login credentials'?'Email yoki parol notogri!':err.message));
-    btn.textContent='[ KIRISH ]';btn.disabled=false;
-  }
-}
-
-async function doReg(){
-  var e=document.getElementById('re').value.trim();
-  var p=document.getElementById('rp').value;
-  var u=document.getElementById('ru').value.trim();
-  var btn=document.getElementById('rbtn');
-  if(!e||!p||!u){showAl('Barcha maydonlarni toldiring!');return;}
-  if(p.length<8){showAl('Parol kamida 8 belgi bolishi kerak!');return;}
-  btn.textContent='[ YARATILMOQDA... ]';btn.disabled=true;hideAl();
-  try{
-    var r=await sb.auth.signUp({email:e,password:p,options:{data:{username:u}}});
-    if(r.error)throw r.error;
-    showAl("ROYXAT MUVAFFAQIYATLI! Endi kiring.",'suc');
-    setTimeout(function(){sw('login');},2000);
-    btn.textContent="[ RO'YXATDAN O'TISH ]";btn.disabled=false;
-  }catch(err){
-    showAl('XATO: '+err.message);
-    btn.textContent="[ RO'YXATDAN O'TISH ]";btn.disabled=false;
-  }
-}
-
-async function doGithub(){
-  try{
-    var r=await sb.auth.signInWithOAuth({provider:'github',options:{redirectTo:window.location.origin+'/index.html'}});
-    if(r.error)throw r.error;
-  }catch(err){showAl('GitHub xatosi: '+err.message);}
-}
-
-document.addEventListener('keydown',function(e){
-  if(e.key==='Enter'){
-    var lv=document.getElementById('loginForm').style.display!=='none';
-    if(lv)doLogin();else doReg();
-  }
-});
-
-sb.auth.getSession().then(function(r){
-  if(r.data&&r.data.session)window.location.href='index.html';
-});
+function sw(t){document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('on')});document.getElementById('loginForm').style.display='none';document.getElementById('regForm').style.display='none';hideAl();if(t==='login'){document.getElementById('loginForm').style.display='block';document.querySelectorAll('.tab')[0].classList.add('on');}else{document.getElementById('regForm').style.display='block';document.querySelectorAll('.tab')[1].classList.add('on');}}
+function showAl(m,t){var b=document.getElementById('al');b.textContent=m;b.className='alert '+(t||'err');}
+function hideAl(){document.getElementById('al').className='alert';}
+function strength(v){['s1','s2','s3','s4'].forEach(function(s){document.getElementById(s).className='ss'});if(!v)return;var sc=0;if(v.length>=8)sc++;if(/[A-Z]/.test(v))sc++;if(/[0-9]/.test(v))sc++;if(/[^A-Za-z0-9]/.test(v))sc++;var cl=sc<=1?'w':sc<=2?'m':'s';for(var i=0;i<sc;i++)document.getElementById(['s1','s2','s3','s4'][i]).classList.add(cl);}
+async function doLogin(){var e=document.getElementById('le').value.trim();var p=document.getElementById('lp').value;var btn=document.getElementById('lbtn');if(!e||!p){showAl('Email va parol kiriting!');return;}btn.textContent='[ TEKSHIRILMOQDA... ]';btn.disabled=true;hideAl();try{var r=await sb.auth.signInWithPassword({email:e,password:p});if(r.error)throw r.error;var pr=await sb.from('profiles').select('role').eq('id',r.data.user.id).single();var isAdmin=pr.data&&pr.data.role==='admin';showAl('KIRISH MUVAFFAQIYATLI! '+(isAdmin?'[ADMIN]':'[USER]'),'suc');localStorage.setItem('cyberuz_role',isAdmin?'admin':'user');setTimeout(function(){window.location.href=isAdmin?'admin.html':'index.html';},1500);}catch(err){showAl('XATO: '+(err.message==='Invalid login credentials'?'Email yoki parol notogri!':err.message));btn.textContent='[ KIRISH ]';btn.disabled=false;}}
+async function doReg(){var e=document.getElementById('re').value.trim();var p=document.getElementById('rp').value;var u=document.getElementById('ru').value.trim();var btn=document.getElementById('rbtn');if(!e||!p||!u){showAl('Barcha maydonlarni toldiring!');return;}if(p.length<8){showAl('Parol kamida 8 belgi bolishi kerak!');return;}btn.textContent='[ YARATILMOQDA... ]';btn.disabled=true;hideAl();try{var r=await sb.auth.signUp({email:e,password:p,options:{data:{username:u}}});if(r.error)throw r.error;showAl("ROYXAT MUVAFFAQIYATLI! Endi kiring.",'suc');setTimeout(function(){sw('login');},2000);btn.textContent="[ RO'YXATDAN O'TISH ]";btn.disabled=false;}catch(err){showAl('XATO: '+err.message);btn.textContent="[ RO'YXATDAN O'TISH ]";btn.disabled=false;}}
+async function doGithub(){try{var r=await sb.auth.signInWithOAuth({provider:'github',options:{redirectTo:window.location.origin+'/index.html'}});if(r.error)throw r.error;}catch(err){showAl('GitHub xatosi: '+err.message);}}
+document.addEventListener('keydown',function(e){if(e.key==='Enter'){var lv=document.getElementById('loginForm').style.display!=='none';if(lv)doLogin();else doReg();}});
+sb.auth.getSession().then(function(r){if(r.data&&r.data.session)window.location.href='index.html';});
 </script>
-
-
-</body></html>
+</body>
+</html>
