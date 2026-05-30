@@ -2,7 +2,6 @@
 <html lang="uz">
 <head>
   <meta charset="UTF-8" />
-  <link rel="stylesheet" href="/style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CyberUz — Kiberxavfsizlik Blog</title>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
@@ -624,9 +623,51 @@
       .nl-form { min-width: unset; width: 100%; }
     }
 
+    
+    /* HAMBURGER */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 5px;
+    }
+    .hamburger span {
+      width: 25px;
+      height: 2px;
+      background: var(--green);
+      transition: all 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 60px; left: 0; right: 0;
+      background: rgba(5,10,14,0.98);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      z-index: 99;
+      flex-direction: column;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: "Share Tech Mono", monospace;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.3s;
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--green); }
     @media (max-width: 768px) {
       nav { padding: 0 1.5rem; }
       .nav-links { display: none; }
+      .hamburger { display: flex; }
       .hero { padding: 100px 1.5rem 3rem; }
       .stats { flex-wrap: wrap; }
       .stat { min-width: 50%; }
@@ -649,13 +690,24 @@
     <li><a href="blue-team.html">BLUE TEAM</a></li>
     <li><a href="tools.html">TOOLS</a></li>
     <li><a href="#">CTF</a></li>
-    <li><a href="#">BIZ HAQIMIZDA</a></li>
   </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
   <div class="nav-status">
     <div class="dot"></div>
     LIVE THREAT MONITOR
   </div>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#">MAQOLALAR</a>
+  <a href="red-team.html">RED TEAM</a>
+  <a href="blue-team.html">BLUE TEAM</a>
+  <a href="tools.html">TOOLS</a>
+  <a href="#">CTF</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -841,6 +893,321 @@
     <a href="#">RSS</a>
   </div>
 </footer>
+
+
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const hamburger = document.getElementById('hamburger');
+  menu.classList.toggle('open');
+  hamburger.classList.toggle('open');
+}
+</script>
+
+<!-- LOADING SCREEN -->
+<div id="loader">
+  <div class="loader-content">
+    <div class="loader-logo">CYBER<span>UZ</span></div>
+    <div class="loader-text" id="loaderText"></div>
+    <div class="loader-bar"><div class="loader-progress" id="loaderProgress"></div></div>
+    <div class="loader-percent" id="loaderPercent">0%</div>
+  </div>
+</div>
+
+<!-- PARTICLES CANVAS -->
+<canvas id="particles"></canvas>
+
+<style>
+/* LOADER */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: #050a0e;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.loader-content {
+  text-align: center;
+}
+
+.loader-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 5rem;
+  letter-spacing: 10px;
+  color: #00ff88;
+  text-shadow: 0 0 40px rgba(0,255,136,0.8), 0 0 80px rgba(0,255,136,0.4);
+  margin-bottom: 2rem;
+  animation: glitch 2s infinite;
+}
+
+.loader-logo span { color: #00e5ff; }
+
+@keyframes glitch {
+  0%, 90%, 100% { transform: translate(0); }
+  91% { transform: translate(-3px, 1px); filter: hue-rotate(90deg); }
+  93% { transform: translate(3px, -1px); filter: hue-rotate(-90deg); }
+  95% { transform: translate(-1px, 2px); }
+  97% { transform: translate(1px, -2px); }
+}
+
+.loader-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.85rem;
+  color: #00ff88;
+  letter-spacing: 3px;
+  margin-bottom: 2rem;
+  min-height: 20px;
+}
+
+.loader-bar {
+  width: 300px;
+  height: 2px;
+  background: #1a3045;
+  margin: 0 auto 1rem;
+  position: relative;
+}
+
+.loader-progress {
+  height: 100%;
+  background: linear-gradient(90deg, #00ff88, #00e5ff);
+  width: 0%;
+  transition: width 0.1s;
+  box-shadow: 0 0 10px #00ff88;
+}
+
+.loader-percent {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  color: #4a6070;
+  letter-spacing: 2px;
+}
+
+/* PARTICLES */
+#particles {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* GLITCH text effect on hero */
+.hero h1 .line1 {
+  animation: textGlitch 4s infinite;
+}
+
+@keyframes textGlitch {
+  0%, 85%, 100% { transform: translate(0); opacity: 1; }
+  86% { transform: translate(-4px, 0); opacity: 0.8; }
+  87% { transform: translate(4px, 0); opacity: 1; }
+  88% { transform: translate(-2px, 0); }
+  89% { transform: translate(0); }
+}
+</style>
+
+<script>
+// =====================
+// LOADING SCREEN
+// =====================
+const loaderTexts = [
+  'INITIALIZING SYSTEM...',
+  'LOADING SECURITY PROTOCOLS...',
+  'ESTABLISHING SECURE CONNECTION...',
+  'BYPASSING FIREWALL...',
+  'DECRYPTING DATA...',
+  'ACCESS GRANTED'
+];
+
+let textIndex = 0;
+let progress = 0;
+const loaderText = document.getElementById('loaderText');
+const loaderProgress = document.getElementById('loaderProgress');
+const loaderPercent = document.getElementById('loaderPercent');
+const loader = document.getElementById('loader');
+
+function typeText(text, callback) {
+  loaderText.textContent = '';
+  let i = 0;
+  const interval = setInterval(() => {
+    loaderText.textContent += text[i];
+    i++;
+    if (i >= text.length) {
+      clearInterval(interval);
+      if (callback) setTimeout(callback, 300);
+    }
+  }, 40);
+}
+
+function updateProgress() {
+  const targetProgress = ((textIndex + 1) / loaderTexts.length) * 100;
+  const interval = setInterval(() => {
+    if (progress < targetProgress) {
+      progress += 2;
+      loaderProgress.style.width = progress + '%';
+      loaderPercent.textContent = Math.round(progress) + '%';
+    } else {
+      clearInterval(interval);
+    }
+  }, 20);
+}
+
+function runLoader() {
+  if (textIndex < loaderTexts.length) {
+    updateProgress();
+    typeText(loaderTexts[textIndex], () => {
+      textIndex++;
+      if (textIndex < loaderTexts.length) {
+        setTimeout(runLoader, 200);
+      } else {
+        setTimeout(() => {
+          loader.style.transition = 'opacity 0.8s ease';
+          loader.style.opacity = '0';
+          setTimeout(() => {
+            loader.style.display = 'none';
+          }, 800);
+        }, 500);
+      }
+    });
+  }
+}
+
+runLoader();
+
+// =====================
+// PARTICLES
+// =====================
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+const particles = [];
+const PARTICLE_COUNT = 80;
+
+class Particle {
+  constructor() {
+    this.reset();
+  }
+
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = (Math.random() - 0.5) * 0.5;
+    this.speedY = (Math.random() - 0.5) * 0.5;
+    this.opacity = Math.random() * 0.5 + 0.1;
+    this.color = Math.random() > 0.5 ? '0,255,136' : '0,229,255';
+    this.char = Math.random() > 0.7 ? String.fromCharCode(Math.floor(Math.random() * 26) + 65) : null;
+  }
+
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+
+    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+      this.reset();
+    }
+  }
+
+  draw() {
+    if (this.char) {
+      ctx.font = `${this.size * 6}px Share Tech Mono`;
+      ctx.fillStyle = `rgba(${this.color},${this.opacity * 0.5})`;
+      ctx.fillText(this.char, this.x, this.y);
+    } else {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${this.color},${this.opacity})`;
+      ctx.fill();
+    }
+  }
+}
+
+for (let i = 0; i < PARTICLE_COUNT; i++) {
+  particles.push(new Particle());
+}
+
+// Connect nearby particles with lines
+function connectParticles() {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 100) {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(0,255,136,${0.05 * (1 - dist/100)})`;
+        ctx.lineWidth = 0.5;
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  connectParticles();
+  requestAnimationFrame(animateParticles);
+}
+
+animateParticles();
+
+// =====================
+// TYPING EFFECT on hero
+// =====================
+const heroTexts = [
+  '> O\'ZBEKISTON KIBERXAVFSIZLIK MARKAZI',
+  '> RED TEAM | BLUE TEAM | CTF',
+  '> HACK. LEARN. DEFEND.',
+];
+let heroTextIndex = 0;
+const heroTag = document.querySelector('.hero-tag');
+
+function typeHeroText() {
+  if (!heroTag) return;
+  const text = heroTexts[heroTextIndex];
+  heroTag.textContent = '';
+  let i = 0;
+  const interval = setInterval(() => {
+    heroTag.textContent += text[i];
+    i++;
+    if (i >= text.length) {
+      clearInterval(interval);
+      setTimeout(() => {
+        heroTextIndex = (heroTextIndex + 1) % heroTexts.length;
+        setTimeout(typeHeroText, 500);
+      }, 2000);
+    }
+  }, 50);
+}
+
+setTimeout(typeHeroText, 2500);
+
+// Mouse interaction with particles
+document.addEventListener('mousemove', (e) => {
+  particles.forEach(p => {
+    const dx = e.clientX - p.x;
+    const dy = e.clientY - p.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 100) {
+      p.x -= dx * 0.02;
+      p.y -= dy * 0.02;
+    }
+  });
+});
+</script>
 
 </body>
 </html>
