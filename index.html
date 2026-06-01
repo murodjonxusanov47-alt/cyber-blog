@@ -683,33 +683,53 @@
 
 <!-- NAV -->
 <nav>
-  <a href="index.html" class="logo">Cyber<span>Uz</span></a>
-<ul class="nav-links">
-  <li><a href="#">MAQOLALAR</a></li>
-<li><a href="red-team.html">RED TEAM</a></li>
-<li><a href="blue-team.html">BLUE TEAM</a></li>
-<li><a href="tools.html">TOOLS</a></li>
-<li><a href="ctf.html">CTF</a></li>
-<li><a href="/quiz.html">QUIZ</a></li>
-<li><a href="login.html">[ LOGIN ]</a></li>
-</ul>
-  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
-  </div>
-  <div class="nav-status">
-    <div class="dot"></div>
-    LIVE THREAT MONITOR
-  </div>
+<a href="#" class="nav-logo">CYBERUZ</a>
+    
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <ul class="nav-links">
+        <li><a href="#">MAQOLALAR</a></li>
+        <li><a href="red-team.html">RED TEAM</a></li>
+        <li><a href="blue-team.html">BLUE TEAM</a></li>
+        <li><a href="tools.html">TOOLS</a></li>
+        <li><a href="ctf.html">CTF</a></li>
+        <li><a href="quiz.html">QUIZ</a></li>
+        <li><a href="login.html">[ LOGIN ]</a></li>
+    </ul>
+
+    <div class="nav-mobile" id="navMobile">
+        <a href="#">MAQOLALAR</a>
+        <a href="red-team.html">RED TEAM</a>
+        <a href="blue-team.html">BLUE TEAM</a>
+        <a href="tools.html">TOOLS</a>
+        <a href="ctf.html">CTF</a>
+        <a href="quiz.html">QUIZ</a>
+        <a href="login.html">[ LOGIN ]</a>
+    </div>
 </nav>
 
-<!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#">MAQOLALAR</a>
-  <a href="red-team.html">RED TEAM</a>
-  <a href="blue-team.html">BLUE TEAM</a>
-  <a href="tools.html">TOOLS</a>
-  <a href="ctf.html">CTF</a>
-</div>
+<script>
+const hamburger = document.getElementById('hamburger');
+const navMobile = document.getElementById('navMobile');
+
+hamburger.addEventListener('click', function() {
+    hamburger.classList.toggle('active');
+    navMobile.classList.toggle('active');
+});
+
+// Linkga bosilsa, menu yopilsin
+const mobileLinks = navMobile.querySelectorAll('a');
+mobileLinks.forEach(link => {
+    link.addEventListener('click', function() {
+        hamburger.classList.remove('active');
+        navMobile.classList.remove('active');
+    });
+});
+</script>
 
 <!-- HERO -->
 <section class="hero">
