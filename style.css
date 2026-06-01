@@ -1,0 +1,202 @@
+/* === ASOSIY ===*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #121212;
+    color: white;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+/* === NAVBAR === */
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    background: #0d0d0d;
+    padding: 15px;
+    box-shadow: 0 0 15px red;
+    gap: 15px;
+}
+
+nav a {
+    color: #00ffcc;
+    text-decoration: none;
+    padding: 8px 12px;
+    transition: 0.3s;
+    white-space: nowrap;
+    font-size: 0.95rem;
+}
+
+nav a:hover {
+    color: red;
+    text-shadow: 0 0 10px red;
+}
+
+/* === MAIN CONTENT === */
+.main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* === SECTIONS === */
+section {
+    margin: 40px 0;
+    padding: 20px;
+    border: 1px solid #333;
+    background: #1a1a1a;
+    border-radius: 8px;
+}
+
+h1, h2, h3 {
+    color: #00ffcc;
+    margin-bottom: 15px;
+}
+
+/* === BUTTONS === */
+button, .btn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 0.95rem;
+}
+
+button:hover, .btn:hover {
+    background: #ff0000;
+    box-shadow: 0 0 15px red;
+}
+
+/* === FORMS === */
+input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background: #1e1e1e;
+    border: 1px solid #00ffcc;
+    color: white;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    box-shadow: 0 0 10px #00ffcc;
+}
+
+/* === CARDS === */
+.card {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+/* === TABLES === */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table th {
+    background: #0d0d0d;
+    color: #00ffcc;
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #333;
+}
+
+table td {
+    padding: 10px;
+    border: 1px solid #333;
+}
+
+table tr:hover {
+    background: #1a1a1a;
+}
+
+/* === FOOTER === */
+footer {
+    background: #0d0d0d;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    border-top: 1px solid #333;
+    color: #999;
+}
+
+/* === RESPONSIVE MOBILE === */
+@media (max-width: 768px) {
+    nav {
+        gap: 8px;
+        padding: 10px;
+    }
+
+    nav a {
+        font-size: 0.75rem;
+        padding: 6px 10px;
+        background: #1e1e1e;
+        border-radius: 5px;
+        border: 1px solid #333;
+    }
+
+    nav a:hover {
+        background: #2a2a2a;
+    }
+
+    .main {
+        padding: 10px;
+    }
+
+    section {
+        padding: 15px;
+        margin: 20px 0;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    button, .btn {
+        width: 100%;
+    }
+
+    table {
+        font-size: 0.85rem;
+    }
+
+    table th, table td {
+        padding: 8px;
+    }
+}
+
+/* === EXTRA SMALL DEVICES === */
+@media (max-width: 480px) {
+    nav a {
+        font-size: 0.65rem;
+        padding: 5px 8px;
+    }
+
+    h1 {
+        font-size: 1.2rem;
+    }
+
+    section {
+        padding: 10px;
+    }
+}
