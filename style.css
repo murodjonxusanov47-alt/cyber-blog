@@ -1,50 +1,124 @@
-/* === ASOSIY ===*/
+/* === ASOSIY === */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
+ 
 body {
     background: #121212;
     color: white;
     font-family: Arial, sans-serif;
     line-height: 1.6;
 }
-
+ 
 /* === NAVBAR === */
 nav {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
     background: #0d0d0d;
-    padding: 15px;
+    padding: 15px 20px;
     box-shadow: 0 0 15px red;
-    gap: 15px;
+    position: relative;
 }
-
+ 
+.nav-logo {
+    color: #00ffcc;
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+ 
+.nav-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    align-items: center;
+}
+ 
 nav a {
     color: #00ffcc;
     text-decoration: none;
     padding: 8px 12px;
     transition: 0.3s;
     white-space: nowrap;
-    font-size: 0.95rem;
 }
-
+ 
 nav a:hover {
     color: red;
     text-shadow: 0 0 10px red;
 }
-
+ 
+/* === HAMBURGER MENU === */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+}
+ 
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: #00ffcc;
+    transition: 0.3s;
+    display: block;
+}
+ 
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(10px, 10px);
+}
+ 
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+ 
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+ 
+/* === MOBILE MENU === */
+.nav-mobile {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: #0d0d0d;
+    flex-direction: column;
+    padding: 10px 0;
+    gap: 0;
+    box-shadow: 0 0 15px red;
+    z-index: 1000;
+}
+ 
+.nav-mobile.active {
+    display: flex;
+}
+ 
+.nav-mobile a {
+    color: #00ffcc;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-bottom: 1px solid #1a1a1a;
+    display: block;
+    transition: 0.3s;
+}
+ 
+.nav-mobile a:hover {
+    background: #1a1a1a;
+    color: red;
+    text-shadow: 0 0 10px red;
+}
+ 
 /* === MAIN CONTENT === */
 .main {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
-
+ 
 /* === SECTIONS === */
 section {
     margin: 40px 0;
@@ -53,12 +127,12 @@ section {
     background: #1a1a1a;
     border-radius: 8px;
 }
-
+ 
 h1, h2, h3 {
     color: #00ffcc;
     margin-bottom: 15px;
 }
-
+ 
 /* === BUTTONS === */
 button, .btn {
     background: red;
@@ -70,12 +144,12 @@ button, .btn {
     transition: 0.3s;
     font-size: 0.95rem;
 }
-
+ 
 button:hover, .btn:hover {
     background: #ff0000;
     box-shadow: 0 0 15px red;
 }
-
+ 
 /* === FORMS === */
 input, textarea, select {
     width: 100%;
@@ -87,12 +161,12 @@ input, textarea, select {
     border-radius: 5px;
     font-family: Arial, sans-serif;
 }
-
+ 
 input:focus, textarea:focus, select:focus {
     outline: none;
     box-shadow: 0 0 10px #00ffcc;
 }
-
+ 
 /* === CARDS === */
 .card {
     background: #1a1a1a;
@@ -101,14 +175,14 @@ input:focus, textarea:focus, select:focus {
     border-radius: 8px;
     margin: 10px 0;
 }
-
+ 
 /* === TABLES === */
 table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
 }
-
+ 
 table th {
     background: #0d0d0d;
     color: #00ffcc;
@@ -116,16 +190,16 @@ table th {
     text-align: left;
     border: 1px solid #333;
 }
-
+ 
 table td {
     padding: 10px;
     border: 1px solid #333;
 }
-
+ 
 table tr:hover {
     background: #1a1a1a;
 }
-
+ 
 /* === FOOTER === */
 footer {
     background: #0d0d0d;
@@ -135,67 +209,89 @@ footer {
     border-top: 1px solid #333;
     color: #999;
 }
-
+ 
+/* === RESPONSIVE DESKTOP === */
+@media (min-width: 769px) {
+    .hamburger {
+        display: none !important;
+    }
+ 
+    .nav-mobile {
+        display: none !important;
+    }
+ 
+    .nav-links {
+        display: flex !important;
+    }
+}
+ 
 /* === RESPONSIVE MOBILE === */
 @media (max-width: 768px) {
     nav {
-        gap: 8px;
-        padding: 10px;
+        padding: 12px 15px;
     }
-
-    nav a {
-        font-size: 0.75rem;
-        padding: 6px 10px;
-        background: #1e1e1e;
-        border-radius: 5px;
-        border: 1px solid #333;
+ 
+    .nav-logo {
+        font-size: 1rem;
     }
-
-    nav a:hover {
-        background: #2a2a2a;
+ 
+    .hamburger {
+        display: flex;
     }
-
+ 
+    .nav-links {
+        display: none;
+    }
+ 
+    .nav-mobile {
+        top: 50px;
+    }
+ 
+    .nav-mobile a {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+ 
     .main {
         padding: 10px;
     }
-
+ 
     section {
         padding: 15px;
         margin: 20px 0;
     }
-
+ 
     h1 {
         font-size: 1.5rem;
     }
-
+ 
     h2 {
         font-size: 1.2rem;
     }
-
+ 
     button, .btn {
         width: 100%;
     }
-
+ 
     table {
         font-size: 0.85rem;
     }
-
+ 
     table th, table td {
         padding: 8px;
     }
 }
-
+ 
 /* === EXTRA SMALL DEVICES === */
 @media (max-width: 480px) {
-    nav a {
-        font-size: 0.65rem;
-        padding: 5px 8px;
+    .nav-logo {
+        font-size: 0.9rem;
     }
-
+ 
     h1 {
         font-size: 1.2rem;
     }
-
+ 
     section {
         padding: 10px;
     }
