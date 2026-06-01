@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cyber Quiz — CyberUz</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#050a0e;--green:#00ff88;--cyan:#00e5ff;--red:#ff2d55;--yellow:#ffd60a;--text:#c8d8e4;--muted:#4a6070;--card:#0d1e2c;--border:#1a3045}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:Inter,sans-serif;min-height:100vh}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(5,10,14,0.95);border-bottom:1px solid var(--border);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:"Bebas Neue",sans-serif;font-size:1.8rem;letter-spacing:3px;color:var(--green);text-decoration:none}
+.logo span{color:var(--cyan)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-family:"Share Tech Mono",monospace;color:var(--muted);text-decoration:none;font-size:0.85rem}
+.nav-links a:hover{color:var(--yellow)}
+.main{position:relative;z-index:1;padding:80px 2rem 4rem;max-width:800px;margin:0 auto}
+.start-screen{text-align:center;padding:3rem 0}
+.start-title{font-family:"Bebas Neue",sans-serif;font-size:5rem;letter-spacing:3px;margin-bottom:1rem;line-height:1}
+.t1{color:var(--yellow);text-shadow:0 0 30px rgba(255,214,10,0.4)}
+.t2{color:#fff}
+.start-desc{font-size:0.95rem;color:var(--muted);line-height:1.7;margin-bottom:2.5rem;max-width:500px;margin-left:auto;margin-right:auto}
+.difficulty-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:2rem}
+.diff-card{background:var(--card);padding:1.5rem 1rem;cursor:pointer;border:2px solid transparent;text-align:center;transition:all 0.3s}
+.diff-card:hover{background:#0f2335}
+.diff-card.selected{border-color:var(--green);background:rgba(0,255,136,0.05)}
+.diff-icon{font-size:2rem;margin-bottom:0.5rem}
+.diff-name{font-family:"Bebas Neue",sans-serif;font-size:1.2rem;letter-spacing:2px;margin-bottom:0.3rem}
+.diff-easy .diff-name{color:var(--green)}
+.diff-medium .diff-name{color:var(--yellow)}
+.diff-hard .diff-name{color:var(--red)}
+.diff-info{font-family:"Share Tech Mono",monospace;font-size:0.7rem;color:var(--muted)}
+.start-btn{background:var(--yellow);color:#000;border:none;padding:1rem 3rem;font-family:"Share Tech Mono",monospace;font-size:1rem;letter-spacing:3px;cursor:pointer;font-weight:bold;transition:all 0.3s}
+.start-btn:hover{background:#e6c000;box-shadow:0 0 30px rgba(255,214,10,0.4)}
+</style>
+</head>
+<body>
+<nav>
+<a href="index.html" class="logo">Cyber<span>Uz</span></a>
+<ul class="nav-links">
+<li><a href="index.html">BOSH SAHIFA</a></li>
+<li><a href="red-team.html">RED TEAM</a></li>
+<li><a href="blue-team.html">BLUE TEAM</a></li>
+<li><a href="tools.html">TOOLS</a></li>
+<li><a href="ctf.html">CTF</a></li>
+<li><a href="quiz.html">QUIZ</a></li>
+</ul>
+</nav>
+<div class="main">
+<div class="start-screen" id="startScreen">
+<div class="start-title"><div class="t1">CYBER</div><div class="t2">QUIZ</div></div>
+<p class="start-desc">Kiberxavfsizlik bilimingizni sinab ko'ring!</p>
+<div class="difficulty-grid">
+<div class="diff-card diff-easy selected" id="d-easy" onclick="selectDiff('easy')">
+<div class="diff-icon">🟢</div>
+<div class="diff-name">BOSHLANGICH</div>
+<div class="diff-info">10 savol · 30 sek</div>
+</div>
+<div class="diff-card diff-medium" id="d-medium" onclick="selectDiff('medium')">
+<div class="diff-icon">🟡</div>
+<div class="diff-name">ORTA</div>
+<div class="diff-info">15 savol · 20 sek</div>
+</div>
+<div class="diff-card diff-hard" id="d-hard" onclick="selectDiff('hard')">
+<div class="diff-icon">🔴</div>
+<div class="diff-name">QIYIN</div>
+<div class="diff-info">20 savol · 15 sek</div>
+</div>
+</div>
+<button class="start-btn" onclick="startQuiz()">BOSHLASH</button>
+</div><div class="quiz-screen" id="quizScreen" style="display:none">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;padding:1rem 1.5rem;background:var(--card);border:1px solid var(--border)">
+<div style="font-family:'Share Tech Mono',monospace;font-size:0.8rem;color:var(--muted)" id="progressText">Savol 1/10</div>
+<div style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--yellow)" id="scoreDisplay">0</div>
+<div style="font-family:'Share Tech Mono',monospace;font-size:1.2rem;color:var(--green)" id="timer">30</div>
+</div>
+<div style="height:3px;background:var(--border);margin-bottom:2rem">
+<div style="height:100%;background:linear-gradient(90deg,var(--green),var(--cyan));transition:width 0.5s;box-shadow:0 0 10px var(--green)" id="progressFill"></div>
+</div>
+<div style="background:var(--card);border:1px solid var(--border);padding:2rem;margin-bottom:1.5rem">
+<div style="font-family:'Share Tech Mono',monospace;font-size:0.75rem;color:var(--yellow);letter-spacing:3px;margin-bottom:0.5rem" id="questionNum">SAVOL 01</div>
+<div style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;padding:2px 8px;border:1px solid var(--cyan);color:var(--cyan);display:inline-block;margin-bottom:1rem" id="questionCategory">NETWORK</div>
+<div style="font-size:1.1rem;color:#fff;line-height:1.6;font-weight:600" id="questionText">Yuklanmoqda...</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-bottom:1rem" id="optionsGrid"></div>
+<div style="display:none;background:rgba(0,229,255,0.05);border:1px solid var(--cyan);border-left:3px solid var(--cyan);padding:1rem 1.5rem;font-family:'Share Tech Mono',monospace;font-size:0.8rem;color:var(--cyan);line-height:1.6;margin-bottom:1rem" id="explanation"></div>
+<button style="display:none;width:100%;background:var(--green);color:#000;border:none;padding:1rem;font-family:'Share Tech Mono',monospace;font-size:0.9rem;letter-spacing:3px;cursor:pointer;font-weight:bold" id="nextBtn" onclick="nextQuestion()">KEYINGI SAVOL</button>
+</div>
+<div class="result-screen" id="resultScreen" style="display:none;text-align:center;padding:3rem 0">
+<div style="width:160px;height:160px;border:3px solid var(--yellow);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 2rem;box-shadow:0 0 30px rgba(255,214,10,0.3)">
+<div style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:var(--yellow);line-height:1" id="finalScore">0</div>
+<div style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--muted)">BALL</div>
+</div>
+<div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:3px;margin-bottom:0.5rem" id="resultGrade">YAXSHI</div>
+<div style="font-family:'Share Tech Mono',monospace;font-size:0.85rem;color:var(--muted);margin-bottom:2rem" id="resultMessage"></div>
+<div style="display:flex;justify-content:center;gap:2rem;margin-bottom:2.5rem">
+<div><div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--green)" id="correctCount">0</div><div style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--muted)">TOGRI</div></div>
+<div><div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--red)" id="wrongCount">0</div><div style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--muted)">NOTOGRI</div></div>
+</div>
+<div style="display:flex;gap:1rem;justify-content:center">
+<button onclick="restartQuiz()" style="background:var(--yellow);color:#000;border:none;padding:0.9rem 2rem;font-family:'Share Tech Mono',monospace;font-size:0.85rem;letter-spacing:2px;cursor:pointer;font-weight:bold">QAYTADAN</button>
+<a href="index.html" style="background:transparent;color:var(--green);border:1px solid var(--green);padding:0.9rem 2rem;font-family:'Share Tech Mono',monospace;font-size:0.85rem;letter-spacing:2px;text-decoration:none">BOSH SAHIFA</a>
+</div>
+</div>
+</div><script>
+var currentDiff="easy";
+var currentQuestions=[];
+var currentIndex=0;
+var score=0;
+var correct=0;
+var wrong=0;
+var timerInterval;
+var timeLeft=30;
+var timeLimits={easy:30,medium:20,hard:15};
+
+var questions={
+easy:[
+{c:"NETWORK",t:"Nmap da barcha portlarni skanerlash flagi?",o:["sV","p-","A","Pn"],a:1,e:"p- barcha 65535 portni skanerlaydi"},
+{c:"LINUX",t:"Joriy foydalanuvchini ko`rsatuvchi buyruq?",o:["id","whoami","users","Hammasi"],a:3,e:"id, whoami va users barchasi joriy user ni ko`rsatadi"},
+{c:"WEB",t:"SQL Injection always true condition?",o:["OR 1=1","AND 0=0","SELECT *","DROP TABLE"],a:0,e:"OR 1=1 har doim true qaytaradi"},
+{c:"TOOLS",t:"Metasploit da exploit ishga tushirish?",o:["start","execute","run","launch"],a:2,e:"run yoki exploit buyrug`i ishlatiladi"},
+{c:"LINUX",t:"SUID bitli fayllarni topish?",o:["find / -perm -4000","ls -la","locate suid","chmod +s"],a:0,e:"find / -perm -4000 2>/dev/null — SUID fayllarni topadi"},
+{c:"NETWORK",t:"Default HTTP port?",o:["443","8080","80","22"],a:2,e:"HTTP=80, HTTPS=443, SSH=22"},
+{c:"TOOLS",t:"Burp Suite nima uchun?",o:["Network scan","Web testing","Password crack","Malware"],a:1,e:"Burp Suite web application pentesting uchun"},
+{c:"BLUE TEAM",t:"SIEM nima?",o:["Security Info Event Mgmt","System Intrusion Monitor","Secure Internet Exchange","Software Integration"],a:0,e:"SIEM — Security Information and Event Management"},
+{c:"CRYPTO",t:"MD5 hash uzunligi?",o:["64 bit","128 bit","256 bit","512 bit"],a:1,e:"MD5 = 128 bit = 32 hex belgi"},
+{c:"RECON",t:"OSINT nima?",o:["Open Source Intelligence","Operating System Interface","Online Security Test","Output Signal Info"],a:0,e:"OSINT — ochiq manbalardan ma`lumot yig`ish"}
+],
+medium:[
+{c:"PRIVESC",t:"Linux sudo huquqlarini ko`rish?",o:["sudo -l","sudo list","cat /etc/sudo","sudoers -v"],a:0,e:"sudo -l joriy user sudo huquqlarini ko`rsatadi"},
+{c:"NETWORK",t:"Nmap SYN scan flagi?",o:["-sT","-sS","-sU","-sN"],a:1,e:"-sS stealth SYN scan"},
+{c:"TOOLS",t:"Windows credential dumping tool?",o:["Wireshark","Mimikatz","Nmap","Burp"],a:1,e:"Mimikatz Windows dan parol va hash oladi"},
+{c:"WEB",t:"XSS da ko`p ishlatiladigan teg?",o:["div","script","img","form"],a:1,e:"script tegi XSS uchun klassik usul"},
+{c:"FORENSICS",t:"Volatility qanday tahlil qiladi?",o:["Disk","Memory RAM","Network","Log"],a:1,e:"Volatility RAM forensika tool"},
+{c:"NETWORK",t:"DNS porti?",o:["53","25","110","143"],a:0,e:"DNS=53, SMTP=25, POP3=110, IMAP=143"},
+{c:"CRYPTO",t:"Pass-the-Hash da nima ishlatiladi?",o:["Plaintext","NTLM hash","Kerberos","SSL"],a:1,e:"NTLM hash bilan autentifikatsiya qilinadi"},
+{c:"WEB",t:"OWASP Top 10 2021 birinchisi?",o:["SQL Injection","Broken Access Control","XSS","CSRF"],a:1,e:"2021 da Broken Access Control birinchi"},
+{c:"TOOLS",t:"John the Ripper nima uchun?",o:["Port scan","Hash crack","Packet capture","Web fuzz"],a:1,e:"John the Ripper password hash crack qiladi"},
+{c:"BLUE TEAM",t:"IOC nima?",o:["Internet of Computers","Indicator of Compromise","Input Output Ctrl","Index of Content"],a:1,e:"IOC — Indicator of Compromise, hujum belgilari"}
+],
+hard:[
+{c:"EXPLOIT",t:"Buffer overflow da birinchi qadam?",o:["NOP sled","Offset topish","Shellcode","ASLR bypass"],a:1,e:"pattern_create bilan EIP offset topiladi"},
+{c:"AD",t:"DCSync hujumi qanday?",o:["DC overload","Replication huquqi bilan hash dump","DNS poison","SMB relay"],a:1,e:"DS-Replication huquqi bilan DC dan hash olish"},
+{c:"CRYPTO",t:"Golden Ticket uchun nima kerak?",o:["User parol","KRBTGT hash","DC IP","Admin parol"],a:1,e:"KRBTGT hash bilan ixtiyoriy TGT yaratiladi"},
+{c:"WEB",t:"SSRF da eng xavfli maqsad?",o:["External API","Cloud metadata 169.254.169.254","Local web","Database"],a:1,e:"169.254.169.254 cloud metadata endpoint"},
+{c:"WEB",t:"XXE injection bilan nima qilish mumkin?",o:["SQL injection","File read va SSRF","XSS","CSRF"],a:1,e:"XXE bilan /etc/passwd kabi fayllar o`qiladi"},
+{c:"NETWORK",t:"ARP Spoofing nima?",o:["DNS zaharlanadi","MAC-IP soxtalashtiriladi","HTTPS o`zgartiriladi","Firewall o`chadi"],a:1,e:"Soxta ARP reply bilan MitM hujumi"},
+{c:"EXPLOIT",t:"ROP nima uchun?",o:["SQLi bypass","DEP/NX bypass","WAF bypass","ASLR enable"],a:1,e:"Return Oriented Programming DEP/NX ni bypass qiladi"},
+{c:"AD",t:"AS-REP Roasting qachon ishlaydi?",o:["Kerberos off","Pre-auth off","NTLM off","SMB signing on"],a:1,e:"Pre-authentication o`chirilganda ishlaydi"},
+{c:"FORENSICS",t:"Windows Event ID 4624 nima?",o:["Account lockout","Successful logon","Failed logon","Account created"],a:1,e:"4624=Successful logon, 4625=Failed logon"},
+{c:"PRIVESC",t:"SeImpersonatePrivilege nimaga olib keladi?",o:["File delete","Token impersonation SYSTEM","Network access","Registry"],a:1,e:"Token impersonation orqali SYSTEM huquqi"}
+]
+};
+
+function selectDiff(d){
+  currentDiff=d;
+  document.getElementById("d-easy").classList.remove("selected");
+  document.getElementById("d-medium").classList.remove("selected");
+  document.getElementById("d-hard").classList.remove("selected");
+  document.getElementById("d-"+d).classList.add("selected");
+}
+
+function shuffle(a){return a.slice().sort(function(){return Math.random()-0.5})}
+
+function startQuiz(){
+  currentQuestions=shuffle(questions[currentDiff]);
+  currentIndex=0;score=0;correct=0;wrong=0;
+  document.getElementById("startScreen").style.display="none";
+  document.getElementById("quizScreen").style.display="block";
+  showQuestion();
+}
+
+function showQuestion(){
+  var q=currentQuestions[currentIndex];
+  var total=currentQuestions.length;
+  document.getElementById("progressText").textContent="Savol "+(currentIndex+1)+"/"+total;
+  document.getElementById("scoreDisplay").textContent=score;
+  document.getElementById("questionNum").textContent="SAVOL "+(currentIndex+1<10?"0":"")+(currentIndex+1);
+  document.getElementById("questionCategory").textContent=q.c;
+  document.getElementById("questionText").textContent=q.t;
+  document.getElementById("progressFill").style.width=(currentIndex/total*100)+"%";
+  document.getElementById("explanation").style.display="none";
+  document.getElementById("nextBtn").style.display="none";
+  var letters=["A","B","C","D"];
+  var grid=document.getElementById("optionsGrid");
+  grid.innerHTML="";
+  q.o.forEach(function(opt,i){
+    var btn=document.createElement("button");
+    btn.style.cssText="background:var(--card);border:none;padding:1.2rem 1.5rem;text-align:left;cursor:pointer;display:flex;align-items:center;gap:1rem;color:var(--text);width:100%";
+    btn.innerHTML="<span style='font-family:Bebas Neue,sans-serif;font-size:1.3rem;color:var(--yellow);min-width:25px'>"+letters[i]+"</span><span style='font-family:Share Tech Mono,monospace;font-size:0.85rem'>"+opt+"</span>";
+    btn.onclick=function(){selectAnswer(i,btn)};
+    grid.appendChild(btn);
+  });
+  timeLeft=timeLimits[currentDiff];
+  startTimer();
+}
+
+function startTimer(){
+  clearInterval(timerInterval);
+  var el=document.getElementById("timer");
+  el.textContent=timeLeft;
+  el.style.color="var(--green)";
+  timerInterval=setInterval(function(){
+    timeLeft--;
+    el.textContent=timeLeft;
+    if(timeLeft<=5)el.style.color="var(--red)";
+    if(timeLeft<=0){clearInterval(timerInterval);timeUp();}
+  },1000);
+}
+
+function timeUp(){
+  wrong++;
+  var q=currentQuestions[currentIndex];
+  var btns=document.getElementById("optionsGrid").querySelectorAll("button");
+  btns.forEach(function(b){b.disabled=true});
+  btns[q.a].style.background="rgba(0,255,136,0.15)";
+  btns[q.a].style.border="1px solid var(--green)";
+  var exp=document.getElementById("explanation");
+  exp.textContent="Vaqt tugadi! "+q.e;
+  exp.style.display="block";
+  document.getElementById("nextBtn").style.display="block";
+}
+
+function selectAnswer(i,btn){
+  clearInterval(timerInterval);
+  var q=currentQuestions[currentIndex];
+  var btns=document.getElementById("optionsGrid").querySelectorAll("button");
+  btns.forEach(function(b){b.disabled=true});
+  var exp=document.getElementById("explanation");
+  if(i===q.a){
+    btn.style.background="rgba(0,255,136,0.15)";
+    btn.style.border="1px solid var(--green)";
+    var pts=currentDiff==="easy"?10:currentDiff==="medium"?15:20;
+    score+=pts+Math.max(0,timeLeft);
+    correct++;
+    exp.textContent="Togri! "+q.e;
+    exp.style.color="var(--green)";
+  }else{
+    btn.style.background="rgba(255,45,85,0.15)";
+    btn.style.border="1px solid var(--red)";
+    btns[q.a].style.background="rgba(0,255,136,0.15)";
+    btns[q.a].style.border="1px solid var(--green)";
+    wrong++;
+    exp.textContent="Notogri! "+q.e;
+    exp.style.color="var(--cyan)";
+  }
+  document.getElementById("scoreDisplay").textContent=score;
+  exp.style.display="block";
+  document.getElementById("nextBtn").style.display="block";
+}
+
+function nextQuestion(){
+  currentIndex++;
+  if(currentIndex>=currentQuestions.length){showResult();}
+  else{showQuestion();}
+}
+
+function showResult(){
+  document.getElementById("quizScreen").style.display="none";
+  document.getElementById("resultScreen").style.display="block";
+  var pct=Math.round(correct/currentQuestions.length*100);
+  document.getElementById("finalScore").textContent=score;
+  document.getElementById("correctCount").textContent=correct;
+  document.getElementById("wrongCount").textContent=wrong;
+  var g=document.getElementById("resultGrade");
+  var m=document.getElementById("resultMessage");
+  if(pct>=90){g.textContent="EXPERT!";g.style.color="var(--yellow)";m.textContent="Ajoyib! Siz haqiqiy mutaxassissiz!";}
+  else if(pct>=70){g.textContent="YAXSHI!";g.style.color="var(--green)";m.textContent="Bilimingiz mustahkam!";}
+  else if(pct>=50){g.textContent="ORTA";g.style.color="var(--cyan)";m.textContent="Mashq qiling!";}
+  else{g.textContent="DAVOM ET!";g.style.color="var(--red)";m.textContent="Ko`proq o`qing!"}
+}
+
+function restartQuiz(){
+  document.getElementById("resultScreen").style.display="none";
+  document.getElementById("startScreen").style.display="block";
+}
+</script>
+</body>
+</html>
