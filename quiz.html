@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cyber Quiz — CyberUz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #050a0e;
+      --green: #00ff88;
+      --cyan: #00e5ff;
+      --red: #ff2d55;
+      --yellow: #ffd60a;
+      --purple: #bf5af2;
+      --text: #c8d8e4;
+      --muted: #4a6070;
+      --card: #0d1e2c;
+      --border: #1a3045;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,136,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,136,0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(5,10,14,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 3px;
+      color: var(--green);
+      text-decoration: none;
+      text-shadow: 0 0 20px rgba(0,255,136,0.5);
+    }
+
+    .logo span { color: var(--cyan); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--yellow); }
+    .nav-links a.active { color: var(--yellow); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    .hamburger span {
+      width: 25px; height: 2px;
+      background: var(--green);
+      transition: all 0.3s;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 60px; left: 0; right: 0;
+      background: rgba(5,10,14,0.98);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      z-index: 99;
+      flex-direction: column;
+    }
+
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.3s;
+    }
+
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--green); }
+
+    /* MAIN */
+    .main {
+      position: relative;
+      z-index: 1;
+      padding: 80px 2rem 4rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* START SCREEN */
+    .start-screen {
+      text-align: center;
+      padding: 3rem 0;
+    }
+
+    .start-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,214,10,0.1);
+      border: 1px solid var(--yellow);
+      padding: 6px 16px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--yellow);
+      letter-spacing: 3px;
+      margin-bottom: 1.5rem;
+    }
+
+    .start-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      letter-spacing: 3px;
+      margin-bottom: 1rem;
+      line-height: 1;
+    }
+
+    .start-title .t1 { color: var(--yellow); text-shadow: 0 0 30px rgba(255,214,10,0.4); }
+    .start-title .t2 { color: #fff; }
+
+    .start-desc {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* DIFFICULTY */
+    .difficulty-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin-bottom: 2rem;
+    }
+
+    .diff-card {
+      background: var(--card);
+      padding: 1.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 2px solid transparent;
+      text-align: center;
+    }
+
+    .diff-card:hover { background: #0f2335; }
+    .diff-card.selected { border-color: var(--green); background: rgba(0,255,136,0.05); }
+
+    .diff-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+
+    .diff-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+      margin-bottom: 0.3rem;
+    }
+
+    .diff-easy .diff-name { color: var(--green); }
+    .diff-medium .diff-name { color: var(--yellow); }
+    .diff-hard .diff-name { color: var(--red); }
+
+    .diff-info {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .start-btn {
+      background: var(--yellow);
+      color: #000;
+      border: none;
+      padding: 1rem 3rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1rem;
+      letter-spacing: 3px;
+      cursor: pointer;
+      font-weight: bold;
+      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      transition: all 0.3s;
+    }
+
+    .start-btn:hover {
+      background: #e6c000;
+      box-shadow: 0 0 30px rgba(255,214,10,0.4);
+      transform: translateY(-2px);
+    }
+
+    /* QUIZ SCREEN */
+    .quiz-screen { display: none; }
+
+    /* Progress */
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding: 1rem 1.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+    }
+
+    .quiz-progress-text {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .quiz-score {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      color: var(--yellow);
+    }
+
+    .timer {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.2rem;
+      color: var(--green);
+      min-width: 40px;
+      text-align: center;
+    }
+
+    .timer.danger { color: var(--red); animation: pulse 0.5s infinite; }
+
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+    .progress-bar {
+      height: 3px;
+      background: var(--border);
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), var(--cyan));
+      transition: width 0.5s;
+      box-shadow: 0 0 10px var(--green);
+    }
+
+    /* Question */
+    .question-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .question-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--yellow), var(--cyan));
+    }
+
+    .question-num {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--yellow);
+      letter-spacing: 3px;
+      margin-bottom: 1rem;
+    }
+
+    .question-category {
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      padding: 2px 8px;
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+    }
+
+    .question-text {
+      font-size: 1.1rem;
+      color: #fff;
+      line-height: 1.6;
+      font-weight: 600;
+    }
+
+    /* Options */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      margin-bottom: 1rem;
+    }
+
+    .option-btn {
+      background: var(--card);
+      border: none;
+      padding: 1.2rem 1.5rem;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--text);
+    }
+
+    .option-btn:hover:not(:disabled) { background: #0f2335; }
+
+    .option-letter {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      color: var(--yellow);
+      min-width: 25px;
+    }
+
+    .option-text {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+
+    .option-btn.correct {
+      background: rgba(0,255,136,0.15) !important;
+      border: 1px solid var(--green);
+    }
+
+    .option-btn.correct .option-letter { color: var(--green); }
+
+    .option-btn.wrong {
+      background: rgba(255,45,85,0.15) !important;
+      border: 1px solid var(--red);
+    }
+
+    .option-btn.wrong .option-letter { color: var(--red); }
+
+    /* Explanation */
+    .explanation {
+      display: none;
+      background: rgba(0,229,255,0.05);
+      border: 1px solid var(--cyan);
+      border-left: 3px solid var(--cyan);
+      padding: 1rem 1.5rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--cyan);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .explanation.show { display: block; }
+
+    .next-btn {
+      width: 100%;
+      background: var(--green);
+      color: #000;
+      border: none;
+      padding: 1rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.9rem;
+      letter-spacing: 3px;
+      cursor: pointer;
+      font-weight: bold;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      display: none;
+      transition: all 0.3s;
+    }
+
+    .next-btn:hover { background: #00cc6a; }
+    .next-btn.show { display: block; }
+
+    /* RESULT SCREEN */
+    .result-screen {
+      display: none;
+      text-align: center;
+      padding: 3rem 0;
+    }
+
+    .result-score-circle {
+      width: 160px;
+      height: 160px;
+      border: 3px solid var(--yellow);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem;
+      box-shadow: 0 0 30px rgba(255,214,10,0.3);
+    }
+
+    .result-score-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      color: var(--yellow);
+      line-height: 1;
+    }
+
+    .result-score-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+    }
+
+    .result-grade {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      letter-spacing: 3px;
+      margin-bottom: 0.5rem;
+    }
+
+    .result-message {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .result-stats {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .result-stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .result-stat-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    .result-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-retry {
+      background: var(--yellow);
+      color: #000;
+      border: none;
+      padding: 0.9rem 2rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      cursor: pointer;
+      font-weight: bold;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+
+    .btn-home {
+      background: transparent;
+      color: var(--green);
+      border: 1px solid var(--green);
+      padding: 0.9rem 2rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .options-grid { grid-template-columns: 1fr; }
+      .difficulty-grid { grid-template-columns: 1fr; }
+      .result-stats { gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Cyber<span>Uz</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">BOSH SAHIFA</a></li>
+    <li><a href="red-team.html">RED TEAM</a></li>
+    <li><a href="blue-team.html">BLUE TEAM</a></li>
+    <li><a href="tools.html">TOOLS</a></li>
+    <li><a href="ctf.html">CTF</a></li>
+    <li><a href="quiz.html" class="active">QUIZ</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">BOSH SAHIFA</a>
+  <a href="red-team.html">RED TEAM</a>
+  <a href="blue-team.html">BLUE TEAM</a>
+  <a href="tools.html">TOOLS</a>
+  <a href="ctf.html">CTF</a>
+  <a href="quiz.html">QUIZ</a>
+</div>
+
+<div class="main">
+
+  <!-- START SCREEN -->
+  <div class="start-screen" id="startScreen">
+    <div class="start-badge">🎯 CYBER QUIZ</div>
+    <div class="start-title">
+      <div class="t1">CYBER</div>
+      <div class="t2">QUIZ</div>
+    </div>
+    <p class="start-desc">
+      Kiberxavfsizlik bilimingizni sinab ko'ring! Red Team, Blue Team, Network va boshqa mavzular bo'yicha savollar.
+    </p>
+
+    <div class="difficulty-grid">
+      <div class="diff-card diff-easy selected" onclick="selectDiff('easy')">
+        <div class="diff-icon">🟢</div>
+        <div class="diff-name">BOSHLANG'ICH</div>
+        <div class="diff-info">10 savol · 30 sek</div>
+      </div>
+      <div class="diff-card diff-medium" onclick="selectDiff('medium')">
+        <div class="diff-icon">🟡</div>
+        <div class="diff-name">O'RTA</div>
+        <div class="diff-info">15 savol · 20 sek</div>
+      </div>
+      <div class="diff-card diff-hard" onclick="selectDiff('hard')">
+        <div class="diff-icon">🔴</div>
+        <div class="diff-name">QIYIN</div>
+        <div class="diff-info">20 savol · 15 sek</div>
+      </div>
+    </div>
+
+    <button class="start-btn" onclick="startQuiz()">▶ BOSHLASH</button>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div class="quiz-screen" id="quizScreen">
+    <div class="quiz-header">
+      <div class="quiz-progress-text" id="progressText">Savol 1/10</div>
+      <div class="quiz-score" id="scoreDisplay">⭐ 0</div>
+      <div class="timer" id="timer">30</div>
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+
+    <div class="question-card">
+      <div class="question-num" id="questionNum">SAVOL 01</div>
+      <div class="question-category" id="questionCategory">NETWORK</div>
+      <div class="question-text" id="questionText">Savol yuklanmoqda...</div>
+    </div>
+
+    <div class="options-grid" id="optionsGrid"></div>
+
+    <div class="explanation" id="explanation"></div>
+
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">KEYINGI SAVOL →</button>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div class="result-screen" id="resultScreen">
+    <div class="result-score-circle">
+      <div class="result-score-num" id="finalScore">0</div>
+      <div class="result-score-label">BALL</div>
+    </div>
+    <div class="result-grade" id="resultGrade">YAXSHI!</div>
+    <div class="result-message" id="resultMessage"></div>
+    <div class="result-stats">
+      <div>
+        <div class="result-stat-num" id="correctCount" style="color: var(--green)">0</div>
+        <div class="result-stat-label">TO'G'RI</div>
+      </div>
+      <div>
+        <div class="result-stat-num" id="wrongCount" style="color: var(--red)">0</div>
+        <div class="result-stat-label">NOTO'G'RI</div>
+      </div>
+      <div>
+        <div class="result-stat-num" id="timeCount" style="color: var(--cyan)">0s</div>
+        <div class="result-stat-label">VAQT</div>
+      </div>
+    </div>
+    <div class="result-btns">
+      <button class="btn-retry" onclick="restartQuiz()">🔄 QAYTADAN</button>
+      <a href="index.html" class="btn-home">🏠 BOSH SAHIFA</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>© 2026 CyberUz — Barcha huquqlar himoyalangan</footer>
+
+<script>
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('open');
+}
+
+// =====================
+// QUESTIONS DATABASE
+// =====================
+const questions = {
+  easy: [
+    {
+      category: 'NETWORK',
+      text: 'Nmap da barcha 65535 portni skanerlash uchun qaysi flag ishlatiladi?',
+      options: ['-sV', '-p-', '-A', '-Pn'],
+      correct: 1,
+      explanation: '-p- flagi barcha 65535 portni skanerlaydi. -sV versiya aniqlaydi, -A aggressive scan, -Pn ping ni o\'chirib qo\'yadi.'
+    },
+    {
+      category: 'RECON',
+      text: 'OSINT nima degani?',
+      options: ['Open Source Intelligence', 'Operating System Interface', 'Online Security Testing', 'Output Signal Information'],
+      correct: 0,
+      explanation: 'OSINT — Open Source Intelligence. Ochiq manbalardan (internet, ijtimoiy tarmoqlar) ma\'lumot yig\'ish.'
+    },
+    {
+      category: 'LINUX',
+      text: 'Linux da joriy foydalanuvchini ko\'rsatuvchi buyruq?',
+      options: ['id', 'whoami', 'users', 'Hammasi to\'g\'ri'],
+      correct: 3,
+      explanation: 'id, whoami va users buyruqlari joriy foydalanuvchi haqida ma\'lumot beradi. Hammasi to\'g\'ri!'
+    },
+    {
+      category: 'WEB',
+      text: 'SQL Injection da "always true" condition qaysi?',
+      options: ["' OR 1=1--", "' AND 0=0--", "SELECT * FROM", "DROP TABLE users"],
+      correct: 0,
+      explanation: "' OR 1=1-- — klassik SQLi payload. 1=1 har doim true, shuning uchun barcha ma'lumotlar qaytariladi."
+    },
+    {
+      category: 'TOOLS',
+      text: 'Metasploit da exploit ishga tushirish buyrug\'i?',
+      options: ['start', 'execute', 'run', 'launch'],
+      correct: 2,
+      explanation: 'Metasploit da run yoki exploit buyrug\'i modul/exploitni ishga tushiradi.'
+    },
+    {
+      category: 'CRYPTO',
+      text: 'MD5 hash uzunligi necha bit?',
+      options: ['64 bit', '128 bit', '256 bit', '512 bit'],
+      correct: 1,
+      explanation: 'MD5 128 bitlik (32 hexadecimal belgi) hash ishlab chiqaradi. Hozir xavfsiz hisoblanmaydi.'
+    },
+    {
+      category: 'LINUX',
+      text: 'SUID bitli fayllarni topish buyrug\'i?',
+      options: ['find / -perm -4000', 'ls -la /suid', 'locate suid', 'chmod +s /'],
+      correct: 0,
+      explanation: 'find / -perm -4000 2>/dev/null — SUID bitli fayllarni topadi. Privilege escalation uchun muhim.'
+    },
+    {
+      category: 'NETWORK',
+      text: 'Default HTTP port raqami?',
+      options: ['443', '8080', '80', '22'],
+      correct: 2,
+      explanation: 'HTTP 80-port, HTTPS 443-port, SSH 22-port va 8080 odatda muqobil HTTP port.'
+    },
+    {
+      category: 'TOOLS',
+      text: 'Burp Suite asosan nima uchun ishlatiladi?',
+      options: ['Network scanning', 'Web application testing', 'Password cracking', 'Malware analysis'],
+      correct: 1,
+      explanation: 'Burp Suite web application pentesting uchun — HTTP interceptor, scanner, repeater va boshqa toollar.'
+    },
+    {
+      category: 'BLUE TEAM',
+      text: 'SIEM nima?',
+      options: ['Security Information and Event Management', 'System Intrusion Event Monitor', 'Secure Internet Exchange Module', 'Software Integration Engine'],
+      correct: 0,
+      explanation: 'SIEM — Security Information and Event Management. Log tahlil va hujumlarni aniqlash tizimi (Splunk, ELK).'
+    }
+  ],
+  medium: [
+    {
+      category: 'PRIVESC',
+      text: 'Linux da sudo huquqlarini ko\'rish buyrug\'i?',
+      options: ['sudo -l', 'sudo list', 'cat /etc/sudo', 'sudoers -v'],
+      correct: 0,
+      explanation: 'sudo -l — joriy foydalanuvchining sudo huquqlarini ko\'rsatadi. Privilege escalation uchun birinchi tekshiruv.'
+    },
+    {
+      category: 'NETWORK',
+      text: 'Nmap SYN scan uchun flag?',
+      options: ['-sT', '-sS', '-sU', '-sN'],
+      correct: 1,
+      explanation: '-sS — SYN (stealth) scan. To\'liq TCP ulanish o\'rnatmaydi, shuning uchun kamroq iz qoldiradi.'
+    },
+    {
+      category: 'ACTIVE DIRECTORY',
+      text: 'Kerberoasting hujumida nima maqsad qilinadi?',
+      options: ['Domain Controller', 'Service account TGS tickets', 'DNS server', 'NTLM hashes'],
+      correct: 1,
+      explanation: 'Kerberoasting — service accountlar uchun TGS ticketlarni so\'rab, offline crack qilish.'
+    },
+    {
+      category: 'WEB',
+      text: 'XSS hujumida qaysi teg ko\'p ishlatiladi?',
+      options: ['<div>', '<script>', '<img>', '<form>'],
+      correct: 1,
+      explanation: '<script>alert(1)</script> — klassik XSS payload. <img> ham onError orqali ishlatilishi mumkin.'
+    },
+    {
+      category: 'FORENSICS',
+      text: 'Volatility qanday turdagi tahlil qiladi?',
+      options: ['Disk forensics', 'Memory (RAM) forensics', 'Network forensics', 'Log analysis'],
+      correct: 1,
+      explanation: 'Volatility — RAM (memory) forensika tool. Jarayonlar, network connections va artifacts topadi.'
+    },
+    {
+      category: 'TOOLS',
+      text: 'Windows da credential dumping uchun mashhur tool?',
+      options: ['Wireshark', 'Mimikatz', 'Nmap', 'Burp Suite'],
+      correct: 1,
+      explanation: 'Mimikatz — Windows tizimidan parollar va hash larni olish uchun eng mashhur tool.'
+    },
+    {
+      category: 'NETWORK',
+      text: 'DNS ning default porti?',
+      options: ['53', '25', '110', '143'],
+      correct: 0,
+      explanation: 'DNS 53-port (TCP va UDP). 25-SMTP, 110-POP3, 143-IMAP.'
+    },
+    {
+      category: 'CRYPTO',
+      text: 'Pass-the-Hash hujumida nima ishlatiladi?',
+      options: ['Plaintext parol', 'NTLM hash', 'Kerberos ticket', 'SSL sertifikat'],
+      correct: 1,
+      explanation: 'Pass-the-Hash — NTLM hash yordamida autentifikatsiya. Parolni bilmasdan ham kirish mumkin.'
+    },
+    {
+      category: 'LINUX',
+      text: '/etc/passwd faylidagi birinchi field nima?',
+      options: ['Parol hash', 'UID', 'Username', 'Home directory'],
+      correct: 2,
+      explanation: '/etc/passwd format: username:x:UID:GID:comment:home:shell. Birinchi field — username.'
+    },
+    {
+      category: 'WEB',
+      text: 'OWASP Top 10 da birinchi o\'rinda qaysi zaiflik turadi (2021)?',
+      options: ['SQL Injection', 'Broken Access Control', 'XSS', 'CSRF'],
+      correct: 1,
+      explanation: 'OWASP Top 10 2021 da Broken Access Control birinchi o\'rinda. Avval Injection birinchi edi.'
+    },
+    {
+      category: 'BLUE TEAM',
+      text: 'IOC nima degani?',
+      options: ['Internet of Computers', 'Indicator of Compromise', 'Input Output Controller', 'Index of Content'],
+      correct: 1,
+      explanation: 'IOC — Indicator of Compromise. Hujum sodir bo\'lganligini ko\'rsatuvchi belgilar (IP, domain, hash).'
+    },
+    {
+      category: 'TOOLS',
+      text: 'John the Ripper asosan nima uchun?',
+      options: ['Port scanning', 'Hash cracking', 'Packet capture', 'Web fuzzing'],
+      correct: 1,
+      explanation: 'John the Ripper — password hash crack qilish tool. MD5, SHA, NTLM va boshqa formatlarni qo\'llab-quvvatlaydi.'
+    },
+    {
+      category: 'NETWORK',
+      text: 'Wireshark da HTTP trafigini filtrlash?',
+      options: ['filter http', 'http.request', 'http', 'protocol==http'],
+      correct: 2,
+      explanation: 'Wireshark filter maydoniga faqat "http" yozsangiz HTTP trafigi ko\'rinadi.'
+    },
+    {
+      category: 'PRIVESC',
+      text: 'Windows da SeImpersonatePrivilege nimaga olib kelishi mumkin?',
+      options: ['File deletion', 'Token impersonation → SYSTEM', 'Network access', 'Registry edit'],
+      correct: 1,
+      explanation: 'SeImpersonatePrivilege — token impersonation orqali SYSTEM huquqiga chiqish (JuicyPotato, PrintSpoofer).'
+    },
+    {
+      category: 'ACTIVE DIRECTORY',
+      text: 'BloodHound qanday ma\'lumotlarni vizualizatsiya qiladi?',
+      options: ['Network topology', 'AD attack paths', 'Malware behavior', 'Log data'],
+      correct: 1,
+      explanation: 'BloodHound — Active Directory attack paths vizualizatsiya. Domain Admin ga eng qisqa yo\'lni topadi.'
+    }
+  ],
+  hard: [
+    {
+      category: 'EXPLOIT',
+      text: 'Buffer overflow da EIP registrini nazorat qilish uchun birinchi qadam?',
+      options: ['NOP sled qo\'shish', 'Offset topish (pattern create)', 'Shellcode yozish', 'ASLR bypass'],
+      correct: 1,
+      explanation: 'pattern_create bilan unique pattern yuborib, EIP da qaysi offset ekanini topamiz. Keyin shellcode va NOP sled.'
+    },
+    {
+      category: 'ACTIVE DIRECTORY',
+      text: 'DCSync hujumi qanday ishlaydi?',
+      options: ['DC ni overload qilish', 'DS-Replication huquqi bilan hash dump', 'DNS poisoning', 'SMB relay'],
+      correct: 1,
+      explanation: 'DCSync — DS-Replication-Get-Changes huquqi bilan DC dan parol hashlarini "replicate" qilish (Mimikatz).'
+    },
+    {
+      category: 'CRYPTO',
+      text: 'Golden Ticket hujumida nima kerak?',
+      options: ['Domain user parol', 'KRBTGT account NTLM hash', 'DC IP manzili', 'Admin parol'],
+      correct: 1,
+      explanation: 'Golden Ticket — KRBTGT hash bilan ixtiyoriy foydalanuvchi uchun TGT yaratish. 10 yilgacha amal qiladi.'
+    },
+    {
+      category: 'WEB',
+      text: 'SSRF hujumida eng xavfli maqsad qaysi?',
+      options: ['External API', 'Cloud metadata service (169.254.169.254)', 'Local web server', 'Database'],
+      correct: 1,
+      explanation: '169.254.169.254 — AWS/GCP/Azure metadata endpoint. SSRF orqali kirish credentials olish imkonini beradi.'
+    },
+    {
+      category: 'PRIVESC',
+      text: 'Linux kernel exploit uchun qaysi tool eng mashhur?',
+      options: ['LinPEAS', 'linux-exploit-suggester', 'GTFOBins', 'pwnkit'],
+      correct: 1,
+      explanation: 'linux-exploit-suggester — kernel versiyasi asosida mavjud exploitlarni taklif qiladi.'
+    },
+    {
+      category: 'NETWORK',
+      text: 'ARP Spoofing hujumida nima sodir bo\'ladi?',
+      options: ['DNS cache zaharlanadi', 'MAC-IP bog\'liqlik soxtalashtiriladi', 'HTTPS sertifikat o\'zgartiriladi', 'Firewall o\'chiriladi'],
+      correct: 1,
+      explanation: 'ARP Spoofing — soxta ARP reply yuborib, victim trafigini o\'zimiz orqali yo\'naltirish (MitM).'
+    },
+    {
+      category: 'FORENSICS',
+      text: 'Volatility da jarayonlar o\'rtasidagi bog\'liqlikni ko\'rsatuvchi plugin?',
+      options: ['pslist', 'pstree', 'psscan', 'cmdline'],
+      correct: 1,
+      explanation: 'pstree — jarayonlar ierarxiyasini daraxt ko\'rinishida ko\'rsatadi. Parent-child munosabatini aniqlash uchun.'
+    },
+    {
+      category: 'EXPLOIT',
+      text: 'ROP (Return Oriented Programming) nima uchun ishlatiladi?',
+      options: ['SQL injection bypass', 'DEP/NX bypass', 'WAF bypass', 'ASLR enable'],
+      correct: 1,
+      explanation: 'ROP — Data Execution Prevention (DEP/NX) ni bypass qilish uchun. Mavjud kod parchalari ("gadgets") ishlatiladi.'
+    },
+    {
+      category: 'WEB',
+      text: 'XXE (XML External Entity) injection orqali nima qilish mumkin?',
+      options: ['SQL injection', 'Local file read va SSRF', 'XSS', 'CSRF'],
+      correct: 1,
+      explanation: 'XXE — XML parser orqali local fayllarni o\'qish (file:///etc/passwd) va SSRF hujumlari.'
+    },
+    {
+      category: 'ACTIVE DIRECTORY',
+      text: 'AS-REP Roasting qaysi holatda ishlaydi?',
+      options: ['Kerberos o\'chirilgan', 'Pre-authentication o\'chirilgan', 'NTLM o\'chirilgan', 'SMB signing yoqilgan'],
+      correct: 1,
+      explanation: 'AS-REP Roasting — pre-authentication o\'chirilgan accountlar uchun AS-REP so\'rab, offline crack qilish.'
+    },
+    {
+      category: 'CRYPTO',
+      text: 'Pass-the-Ticket hujumida nima transfer qilinadi?',
+      options: ['NTLM hash', 'Kerberos TGT/TGS ticket', 'SSL sertifikat', 'SSH kalit'],
+      correct: 1,
+      explanation: 'Pass-the-Ticket — Kerberos ticketlarini (TGT yoki TGS) o\'g\'irlab boshqa mashinada ishlatish.'
+    },
+    {
+      category: 'NETWORK',
+      text: 'Covenant C2 framework da agent nomi?',
+      options: ['Beacon', 'Grunt', 'Implant', 'Agent'],
+      correct: 1,
+      explanation: 'Covenant C2 framework da agent "Grunt" deyiladi. Cobalt Strike da esa "Beacon".'
+    },
+    {
+      category: 'PRIVESC',
+      text: 'Windows DLL Hijacking nima?',
+      options: ['DLL faylni o\'chirish', 'Zararli DLL ni kutilgan yo\'lga joylashtirish', 'DLL ni encrypt qilish', 'DLL import jadvalini o\'zgartirish'],
+      correct: 1,
+      explanation: 'DLL Hijacking — dastur qidiradigan yo\'lga zararli DLL joylashtirish. Dastur uni yuklaganda kod ishga tushadi.'
+    },
+    {
+      category: 'FORENSICS',
+      text: 'Windows Event ID 4624 nima?',
+      options: ['Account lockout', 'Successful logon', 'Failed logon', 'Account created'],
+      correct: 1,
+      explanation: 'Event ID 4624 — Successful Account Logon. 4625 — Failed logon. 4648 — Explicit credentials logon.'
+    },
+    {
+      category: 'EXPLOIT',
+      text: 'Use After Free (UAF) zaiflik qanday ekspluatatsiya qilinadi?',
+      options: ['Stack overflow', 'Freed memory ga zararli ob\'ekt joylashtirish', 'Format string', 'Integer overflow'],
+      correct: 1,
+      explanation: 'UAF — free() qilingan xotira hali ishlatilayapti. Attacker shu xotiraga o\'z ob\'ektini joylashtirib kod bajaradi.'
+    },
+    {
+      category: 'WEB',
+      text: 'Deserialization hujumida qaysi Java library ko\'p ekspluatatsiya qilinadi?',
+      options: ['Jackson', 'Commons Collections', 'Gson', 'Fastjson'],
+      correct: 1,
+      explanation: 'Apache Commons Collections — deserialization gadget chain uchun eng mashhur library. ysoserial tool ishlatiladi.'
+    },
+    {
+      category: 'ACTIVE DIRECTORY',
+      text: 'Constrained Delegation da S4U2Self nima?',
+      options: ['Service to User self ticket', 'System for User self impersonation', 'Secure 4 Users', 'Service 4 Universal'],
+      correct: 1,
+      explanation: 'S4U2Self — xizmat o\'z nomiga boshqa foydalanuvchi uchun TGS so\'rashi. Constrained delegation zanjirining bir qismi.'
+    },
+    {
+      category: 'NETWORK',
+      text: 'IPv6 link-local prefix qaysi?',
+      options: ['FC00::/7', 'FE80::/10', '2001::/32', 'FF00::/8'],
+      correct: 1,
+      explanation: 'FE80::/10 — IPv6 link-local prefix. Faqat local segment da ishlaydi, routerdan o\'tmaydi.'
+    },
+    {
+      category: 'CRYPTO',
+      text: 'NTLM v2 challenge-response da nima yangi qo\'shildi?',
+      options: ['Encryption', 'Client challenge + timestamp', 'Digital signature', 'Certificate pinning'],
+      correct: 1,
+      explanation: 'NTLMv2 da client challenge va timestamp qo\'shildi. Replay hujumlarini qiyinlashtiradi, lekin offline crack hali ham mumkin.'
+    },
+    {
+      category: 'EXPLOIT',
+      text: 'Heap spray texnikasi nima uchun ishlatiladi?',
+      options: ['Stack ni tozalash', 'Heap da shellcode manzilini taxmin qilishni osonlashtirish', 'Memory leak topish', 'GC ni aldash'],
+      correct: 1,
+      explanation: 'Heap spray — heap da ko\'p miqdorda NOP sled + shellcode joylashtirish. Manzilni aniq bilmasdan ham ishlaydi.'
+    }
+  ]
+};
+
+// =====================
+// QUIZ STATE
+// =====================
+let currentDiff = 'easy';
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let correct = 0;
+let wrong = 0;
+let timerInterval;
+let timeLeft;
+let totalTime = 0;
+let questionStartTime;
+
+const timeLimits = { easy: 30, medium: 20, hard: 15 };
+
+function selectDiff(diff) {
+  currentDiff = diff;
+  document.querySelectorAll('.diff-card').forEach(c => c.classList.remove('selected'));
+  document.querySelector('.diff-' + diff).classList.add('selected');
+}
+
+function shuffle(arr) {
+  return [...arr].sort(() => Math.random() - 0.5);
+}
+
+function startQuiz() {
+  currentQuestions = shuffle(questions[currentDiff]);
+  currentIndex = 0;
+  score = 0;
+  correct = 0;
+  wrong = 0;
+  totalTime = 0;
+
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('quizScreen').style.display = 'block';
+
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = currentQuestions[currentIndex];
+  const total = currentQuestions.length;
+
+  document.getElementById('progressText').textContent = `Savol ${currentIndex + 1}/${total}`;
+  document.getElementById('scoreDisplay').textContent = `⭐ ${score}`;
+  document.getElementById('questionNum').textContent = `SAVOL ${String(currentIndex + 1).padStart(2, '0')}`;
+  document.getElementById('questionCategory').textContent = q.category;
+  document.getElementById('questionText').textContent = q.text;
+  document.getElementById('progressFill').style.width = (currentIndex / total * 100) + '%';
+  document.getElementById('explanation').className = 'explanation';
+  document.getElementById('nextBtn').className = 'next-btn';
+
+  const letters = ['A', 'B', 'C', 'D'];
+  const grid = document.getElementById('optionsGrid');
+  grid.innerHTML = '';
+
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span class="option-text">${opt}</span>`;
+    btn.onclick = () => selectAnswer(i, btn);
+    grid.appendChild(btn);
+  });
+
+  timeLeft = timeLimits[currentDiff];
+  questionStartTime = Date.now();
+  startTimer();
+}
+
+function startTimer() {
+  clearInterval(timerInterval);
+  const timerEl = document.getElementById('timer');
+  timerEl.textContent = timeLeft;
+  timerEl.className = 'timer';
+
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    timerEl.textContent = timeLeft;
+    if (timeLeft <= 5) timerEl.className = 'timer danger';
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      timeUp();
+    }
+  }, 1000);
+}
+
+function timeUp() {
+  wrong++;
+  totalTime += timeLimits[currentDiff];
+  const q = currentQuestions[currentIndex];
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+  btns[q.correct].classList.add('correct');
+
+  const expEl = document.getElementById('explanation');
+  expEl.textContent = '⏰ Vaqt tugadi! ' + q.explanation;
+  expEl.className = 'explanation show';
+  document.getElementById('nextBtn').className = 'next-btn show';
+}
+
+function selectAnswer(index, btn) {
+  clearInterval(timerInterval);
+  const elapsed = Math.round((Date.now() - questionStartTime) / 1000);
+  totalTime += elapsed;
+
+  const q = currentQuestions[currentIndex];
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+
+  const expEl = document.getElementById('explanation');
+
+  if (index === q.correct) {
+    btn.classList.add('correct');
+    const points = currentDiff === 'easy' ? 10 : currentDiff === 'medium' ? 15 : 20;
+    const timeBonus = Math.max(0, timeLeft * (currentDiff === 'easy' ? 1 : currentDiff === 'medium' ? 2 : 3));
+    score += points + timeBonus;
+    correct++;
+    expEl.textContent = '✅ To\'g\'ri! ' + q.explanation;
+  } else {
+    btn.classList.add('wrong');
+    btns[q.correct].classList.add('correct');
+    wrong++;
+    expEl.textContent = '❌ Noto\'g\'ri! ' + q.explanation;
+  }
+
+  expEl.className = 'explanation show';
+  document.getElementById('scoreDisplay').textContent = `⭐ ${score}`;
+  document.getElementById('nextBtn').className = 'next-btn show';
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex >= currentQuestions.length) {
+    showResult();
+  } else {
+    showQuestion();
+  }
+}
+
+function showResult() {
+  document.getElementById('quizScreen').style.display = 'none';
+  document.getElementById('resultScreen').style.display = 'block';
+
+  const total = currentQuestions.length;
+  const percent = Math.round(correct / total * 100);
+
+  document.getElementById('finalScore').textContent = score;
+  document.getElementById('correctCount').textContent = correct;
+  document.getElementById('wrongCount').textContent = wrong;
+  document.getElementById('timeCount').textContent = totalTime + 's';
+
+  let grade, message, color;
+  if (percent >= 90) {
+    grade = '🏆 EXPERT!';
+    message = 'Ajoyib! Siz haqiqiy kiberxavfsizlik mutaxassisisiz!';
+    color = 'var(--yellow)';
+  } else if (percent >= 70) {
+    grade = '⭐ YAXSHI!';
+    message = 'Zo\'r natija! Bilimingiz mustahkam.';
+    color = 'var(--green)';
+  } else if (percent >= 50) {
+    grade = '📚 O\'RTA';
+    message = 'Yaxshi boshlanish! Ko\'proq o\'qing va mashq qiling.';
+    color = 'var(--cyan)';
+  } else {
+    grade = '💪 DAVOM ET!';
+    message = 'Tushunmagan mavzularni qaytadan o\'rganing. Harakat qiling!';
+    color = 'var(--red)';
+  }
+
+  const gradeEl = document.getElementById('resultGrade');
+  gradeEl.textContent = grade;
+  gradeEl.style.color = color;
+  document.getElementById('resultMessage').textContent = message;
+}
+
+function restartQuiz() {
+  document.getElementById('resultScreen').style.display = 'none';
+  document.getElementById('startScreen').style.display = 'block';
+}
+</script>
+
+</body>
+                   </html>
