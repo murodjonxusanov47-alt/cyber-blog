@@ -1,0 +1,967 @@
+[01.06.2026 15:15] 生活很美好, 要及时珍惜: <!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Languages — CyberUz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #050a0e;
+      --green: #00ff88;
+      --cyan: #00e5ff;
+      --red: #ff2d55;
+      --yellow: #ffd60a;
+      --purple: #bf5af2;
+      --text: #c8d8e4;
+      --muted: #4a6070;
+      --card: #0d1e2c;
+      --border: #1a3045;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,136,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,136,0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(5,10,14,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 3px;
+      color: var(--green);
+      text-decoration: none;
+      text-shadow: 0 0 20px rgba(0,255,136,0.5);
+    }
+
+    .logo span { color: var(--cyan); }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--green); }
+    .nav-links a.active { color: var(--green); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    .hamburger span {
+      width: 25px; height: 2px;
+      background: var(--green);
+      transition: all 0.3s;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 60px; left: 0; right: 0;
+      background: rgba(5,10,14,0.98);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      z-index: 99;
+      flex-direction: column;
+    }
+
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.3s;
+    }
+
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--green); }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      z-index: 1;
+      padding: 100px 4rem 3rem;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,255,136,0.1);
+      border: 1px solid var(--green);
+      padding: 6px 16px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--green);
+      letter-spacing: 3px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 7vw, 6rem);
+      line-height: 1;
+      letter-spacing: 3px;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 .t1 { color: var(--green); }
+    .hero h1 .t2 { color: #fff
+[01.06.2026 15:15] 生活很美好, 要及时珍惜: ; }
+
+    .hero-desc {
+      font-size: 0.95rem;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+
+    /* LANGUAGE TABS */
+    .lang-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1px;
+      background: var(--border);
+      max-width: 600px;
+      margin: 0 auto 3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .lang-tab {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-align: center;
+      cursor: pointer;
+      background: var(--card);
+      color: var(--muted);
+      border: none;
+      transition: all 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .lang-tab .flag { font-size: 1.5rem; }
+    .lang-tab:hover { background: #0f2335; color: var(--text); }
+    .lang-tab.active { background: var(--green); color: #000; font-weight: bold; }
+    .lang-tab.active .lang-name { color: #000; }
+
+    /* CONTENT */
+    .content-section {
+      position: relative;
+      z-index: 1;
+      padding: 0 4rem 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: none;
+    }
+
+    .content-section.active { display: block; }
+
+    .lang-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+      padding: 1.5rem 2rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--green);
+    }
+
+    .lang-flag { font-size: 3rem; }
+
+    .lang-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: #fff;
+      letter-spacing: 2px;
+    }
+
+    .lang-subtitle {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+    }
+
+    /* MODULES GRID */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      margin-bottom: 3rem;
+    }
+
+    .module-card {
+      background: var(--card);
+      padding: 2rem;
+      cursor: pointer;
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .module-card:hover { background: #0f2335; }
+
+    .module-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 0;
+      background: var(--green);
+      transition: height 0.4s;
+    }
+
+    .module-card:hover::before { height: 100%; }
+
+    .module-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      color: rgba(0,255,136,0.08);
+      position: absolute;
+      top: -5px; right: 10px;
+      line-height: 1;
+    }
+
+    .module-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      padding: 2px 8px;
+      border: 1px solid var(--green);
+      color: var(--green);
+      display: inline-block;
+      margin-bottom: 0.8rem;
+      letter-spacing: 1px;
+    }
+
+    .module-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      color: #fff;
+      letter-spacing: 1px;
+      margin-bottom: 0.8rem;
+      line-height: 1.2;
+    }
+
+    .module-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    /* LESSON CONTENT */
+    .lesson-box {
+      background: #050a0e;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--cyan);
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      line-height: 1.8;
+    }
+
+    .lesson-title {
+      font-size: 0.7rem;
+      color: var(--cyan);
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+    }
+
+    .lesson-text { color: var(--text); }
+
+    .code-box {
+      background: #020608;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--yellow);
+      padding: 1rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+[01.06.2026 15:15] 生活很美好, 要及时珍惜: line-height: 1.8;
+      margin-bottom: 1rem;
+      overflow-x: auto;
+    }
+
+    .c-green { color: var(--green); }
+    .c-cyan { color: var(--cyan); }
+    .c-yellow { color: var(--yellow); }
+    .c-red { color: var(--red); }
+    .c-muted { color: var(--muted); }
+
+    .module-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      margin-top: 1rem;
+    }
+
+    .module-level {
+      padding: 2px 8px;
+      font-size: 0.65rem;
+    }
+
+    .level-beginner { background: rgba(0,255,136,0.1); color: var(--green); }
+    .level-intermediate { background: rgba(255,214,10,0.1); color: var(--yellow); }
+    .level-advanced { background: rgba(255,45,85,0.1); color: var(--red); }
+
+    /* VOCABULARY TABLE */
+    .vocab-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+    }
+
+    .vocab-table th {
+      background: var(--border);
+      color: var(--green);
+      padding: 0.75rem 1rem;
+      text-align: left;
+      letter-spacing: 2px;
+      font-size: 0.7rem;
+    }
+
+    .vocab-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .vocab-table tr:hover td { background: rgba(0,255,136,0.03); }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      color: var(--green);
+      letter-spacing: 3px;
+      text-decoration: none;
+    }
+
+    .footer-copy {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero { padding: 100px 1.5rem 2rem; }
+      .lang-tabs { flex-wrap: wrap; }
+      .content-section { padding: 0 1.5rem 3rem; }
+      .modules-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Cyber<span>Uz</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">BOSH SAHIFA</a></li>
+    <li><a href="red-team.html">RED TEAM</a></li>
+    <li><a href="blue-team.html">BLUE TEAM</a></li>
+    <li><a href="tools.html">TOOLS</a></li>
+    <li><a href="ctf.html">CTF</a></li>
+    <li><a href="quiz.html">QUIZ</a></li>
+    <li><a href="languages.html" class="active">LANGUAGES</a></li>
+    <li><a href="login.html" style="color:var(--green);border:1px solid var(--green);padding:3px 8px;">LOGIN</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">BOSH SAHIFA</a>
+  <a href="red-team.html">RED TEAM</a>
+  <a href="blue-team.html">BLUE TEAM</a>
+  <a href="tools.html">TOOLS</a>
+  <a href="ctf.html">CTF</a>
+  <a href="quiz.html">QUIZ</a>
+  <a href="languages.html">LANGUAGES</a>
+  <a href="login.html">LOGIN</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🌍 4 TA TIL</div>
+  <h1>
+    <div class="t1">LANGUAGES</div>
+    <div class="t2">O'QUV QO'LLANMALAR</div>
+  </h1>
+  <p class="hero-desc">
+    Kiberxavfsizlik asoslarini 4 ta tilda o'rganing — Koreyscha, Xitoycha, Inglizcha va Turkcha. Har bir til bo'yicha maxsus lug'at va amaliy qo'llanmalar.
+  </p>
+</div>
+
+<!-- LANGUAGE TABS -->
+<div class="lang-tabs" style="margin-top: 2rem;">
+  <button class="lang-tab active" onclick="showLang('korean')">
+    <span class="flag">🇰🇷</span>
+    <span>한국어</span>
+  </button>
+  <button class="lang-tab" onclick="
+[01.06.2026 15:15] 生活很美好, 要及时珍惜: showLang('chinese')">
+    <span class="flag">🇨🇳</span>
+    <span>中文</span>
+  </button>
+  <button class="lang-tab" onclick="showLang('english')">
+    <span class="flag">🇬🇧</span>
+    <span>ENGLISH</span>
+  </button>
+  <button class="lang-tab" onclick="showLang('turkish')">
+    <span class="flag">🇹🇷</span>
+    <span>TÜRKÇE</span>
+  </button>
+</div>
+
+<!-- ==================== KOREAN ==================== -->
+<div class="content-section active" id="lang-korean">
+  <div class="lang-header">
+    <div class="lang-flag">🇰🇷</div>
+    <div>
+      <div class="lang-title">한국어 — KOREYSCHA</div>
+      <div class="lang-subtitle">KOREAN CYBERSECURITY GUIDE · 사이버 보안 가이드</div>
+    </div>
+  </div>
+
+  <div class="modules-grid">
+
+    <!-- Module 1 -->
+    <div class="module-card">
+      <div class="module-num">01</div>
+      <div class="module-tag">기초 · ASOSLAR</div>
+      <div class="module-title">사이버 보안 기초<br><span style="color:var(--muted);font-size:1rem">Kiberxavfsizlik Asoslari</span></div>
+      <div class="module-desc">Kiberxavfsizlikning asosiy tushunchalari Koreyscha bilan o'rganing.</div>
+      <div class="lesson-box">
+        <div class="lesson-title">ASOSIY SO'ZLAR</div>
+        <div class="lesson-text">
+          해킹 (Haeking) — Hacking<br>
+          보안 (Boan) — Security<br>
+          네트워크 (Neteuwokeu) — Network<br>
+          바이러스 (Baireoseu) — Virus<br>
+          방화벽 (Banghwabyeok) — Firewall
+        </div>
+      </div>
+      <div class="module-footer">
+        <span class="module-level level-beginner">BOSHLANGICH</span>
+        <span>5 dars</span>
+      </div>
+    </div>
+
+    <!-- Module 2 -->
+    <div class="module-card">
+      <div class="module-num">02</div>
+      <div class="module-tag">네트워크 · NETWORK</div>
+      <div class="module-title">네트워크 보안<br><span style="color:var(--muted);font-size:1rem">Tarmoq Xavfsizligi</span></div>
+      <div class="module-desc">Tarmoq hujumlari va himoya usullarini Koreyscha terminologiya bilan o'rganing.</div>
+      <div class="lesson-box">
+        <div class="lesson-title">NETWORK SO'ZLARI</div>
+        <div class="lesson-text">
+          침투 테스트 — Penetration Testing<br>
+          취약점 — Vulnerability (Chwiyakjeom)<br>
+          익스플로잇 — Exploit<br>
+          페이로드 — Payload<br>
+          스캐닝 — Scanning
+        </div>
+      </div>
+      <div class="module-footer">
+        <span class="module-level level-intermediate">O'RTA</span>
+        <span>8 dars</span>
+      </div>
+    </div>
+
+    <!-- Module 3 -->
+    <div class="module-card">
+      <div class="module-num">03</div>
+      <div class="module-tag">도구 · TOOLS</div>
+      <div class="module-title">해킹 도구<br><span style="color:var(--muted);font-size:1rem">Hacking Tools</span></div>
+      <div class="module-desc">Mashhur kiberxavfsizlik toollarini Koreyscha buyruqlar bilan ishlating.</div>
+      <div class="code-box">
+        <span class="c-muted"># Nmap - 포트 스캐닝 (Port Scanning)</span><br>
+        <span class="c-green">nmap</span> -A -p- <span class="c-cyan">타겟IP</span><br><br>
+        <span class="c-muted"># 결과 저장 (Natijani saqlash)</span><br>
+        <span class="c-green">nmap</span> -oN <span class="c-yellow">result.txt</span> target
+      </div>
+      <div class="module-footer">
+        <span class="module-level level-intermediate">O'RTA</span>
+        <span>10 dars</span>
+      </div>
+    </div>
+
+    <!-- Module 4 -->
+    <div class="module-card">
+      <div class="module-num">04</div>
+      <div class="module-tag">인증 · SERTIFIKAT</div>
+      <div class="module-title">한국 자격증<br><span style="color:var(--muted);font-size:1rem">Koreya Sertifikatlari</span></div>
+      <div class="module-desc">Koreyada kiberxavfsizlik sohasida eng mashhur sertifikatlar.</div>
+      <div class="lesson-box">
+        <div class="lesson-title">KOREYA SERTIFIKATLARI</div>
+        <div class="lesson-text">
+          정보보안기사 — Xavfsizlik muhandisi<br>
+          CPPG — Shaxsiy ma'lumot mutaxassisi<br>
+          CISSP — Xalqaro xavfsizlik<br>
+          정보처리기사 — IT muhandisi
+        </div>
+      </div>
+      <div class="module-footer">
+        <span class="module-le
+[01.06.2026 15:15] 生活很美好, 要及时珍惜: vel level-advanced">QIYIN</span>
+        <span>12 dars</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Korean Vocabulary -->
+  <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:2px;color:#fff;margin-bottom:1rem">🇰🇷 KOREYSCHA LUGHATI</h3>
+  <table class="vocab-table">
+    <tr><th>O'ZBEKCHA</th><th>한국어</th><th>TALAFFUZ</th></tr>
+    <tr><td>Hacker</td><td>해커</td><td>Haekeo</td></tr>
+    <tr><td>Parol</td><td>비밀번호</td><td>Bimilbeonho</td></tr>
+    <tr><td>Shifrlash</td><td>암호화</td><td>Amhohwa</td></tr>
+    <tr><td>Zararli dastur</td><td>악성코드</td><td>Akseong kodeu</td></tr>
+    <tr><td>Tarmoq</td><td>네트워크</td><td>Neteuwokeu</td></tr>
+    <tr><td>Hujum</td><td>공격</td><td>Gonggyeok</td></tr>
+    <tr><td>Himoya</td><td>방어</td><td>Bangeo</td></tr>
+    <tr><td>Zaiflik</td><td>취약점</td><td>Chwiyakjeom</td></tr>
+  </table>
+</div>
+
+<!-- ==================== CHINESE ==================== -->
+<div class="content-section" id="lang-chinese">
+  <div class="lang-header">
+    <div class="lang-flag">🇨🇳</div>
+    <div>
+      <div class="lang-title">中文 — XITOYCHA</div>
+      <div class="lang-subtitle">CHINESE CYBERSECURITY GUIDE · 网络安全指南</div>
+    </div>
+  </div>
+
+  <div class="modules-grid">
+
+    <div class="module-card">
+      <div class="module-num">01</div>
+      <div class="module-tag">基础 · ASOSLAR</div>
+      <div class="module-title">网络安全基础<br><span style="color:var(--muted);font-size:1rem">Kiberxavfsizlik Asoslari</span></div>
+      <div class="module-desc">Kiberxavfsizlik asoslarini Xitoycha terminologiya bilan o'rganing.</div>
+      <div class="lesson-box">
+        <div class="lesson-title">ASOSIY SO'ZLAR</div>
+        <div class="lesson-text">
+          黑客 (Hēikè) — Hacker<br>
+          网络安全 (Wǎngluò ānquán) — Cybersecurity<br>
+          防火墙 (Fánghuǒqiáng) — Firewall<br>
+          加密 (Jiāmì) — Encryption<br>
+          漏洞 (Lòudòng) — Vulnerability
+        </div>
+      </div>
+      <div class="module-footer">
+        <span class="module-level level-beginner">BOSHLANGICH</span>
+        <span>5 dars</span>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-num">02</div>
+      <div class="module-tag">渗透测试 · PENTEST</div>
+      <div class="module-title">渗透测试基础<br><span style="color:var(--muted);font-size:1rem">Penetration Testing</span></div>
+      <div class="module-desc">Penetration testing asoslarini Xitoycha bilan o'rganing.</div>
+      <div class="code-box">
+        <span class="c-muted"># 端口扫描 (Port Scanning)</span><br>
+        <span class="c-green">nmap</span> -sV <span class="c-cyan">目标IP</span><br><br>
+        <span class="c-muted"># 目录枚举 (Directory enum)</span><br>
+        <span class="c-green">gobuster</span> dir -u http://目标
+      </div>
+      <div class="module-footer">
+        <span class="module-level level-intermediate">O'RTA</span>
+        <span>8 dars</span>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-num">03</div>
+      <div class="module-tag">工具 · TOOLS</div>
+      <div class="module-title">安全工具<br><span style="color:var(--muted);font-size:1rem">Security Tools</span></div>
+      <div class="module-desc">Xitoyda mashhur kiberxavfsizlik toollar va ulardan foydalanish.</div>
+      <div class="lesson-box">
+        <div class="lesson-title">MASHHUR TOOLLAR</div>
+        <div class="lesson-text">
+          Nmap — 网络扫描工具<br>
+          Metasploit — 漏洞利用框架<br>
+          Burp Suite — Web测试工具<br>
+          Wireshark — 数据包分析<br>
+          SQLmap — SQL注入工具
+        </div>
+      </div>
+      <div class="module-footer">
+        <span class="module-level level-intermediate">O'RTA</span>
+        <span>10 dars</span>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-num">04</div>
+      <div class="module-tag">认证 · SERTIFIKAT</div>
+      <div class="module-title">中国认证<br><span style="color:var(--muted);font-size:1rem">Xitoy Sertifikatlari</span></div>
+      <div class="module-desc">Xitoyda kiberxavfsizlik sohasidagi eng muhim sertifikatlar.</div>
+      <div class="lesson-box">
+        <div class="lesson-title">XI
+[01.06.2026 15:15] 生活很美好, 要及时珍惜: TOY SERTIFIKATLARI</div>
+        <div class="lesson-text">
+          CISP — 注册信息安全专业人员<br>
+          CISSP — 国际安全认证<br>
+          CEH — 道德黑客认证<br>
+          OSCP — 渗透测试认证
+        </div>
+      </div>
+      <div class="module-footer">
+        <span class="module-level level-advanced">QIYIN</span>
+        <span>12 dars</span>
+      </div>
+    </div>
+
+  </div>
+
+  <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:2px;color:#fff;margin-bottom:1rem">🇨🇳 XITOYCHA LUGHATI</h3>
+  <table class="vocab-table">
+    <tr><th>O'ZBEKCHA</th><th>中文</th><th>PINYIN</th></tr>
+    <tr><td>Hacker</td><td>黑客</td><td>Hēikè</td></tr>
+    <tr><td>Parol</td><td>密码</td><td>Mìmǎ</td></tr>
+    <tr><td>Shifrlash</td><td>加密</td><td>Jiāmì</td></tr>
+    <tr><td>Zararli dastur</td><td>恶意软件</td><td>Èyì ruǎnjiàn</td></tr>
+    <tr><td>Tarmoq</td><td>网络</td><td>Wǎngluò</td></tr>
+    <tr><td>Hujum</td><td>攻击</td><td>Gōngjī</td></tr>
+    <tr><td>Himoya</td><td>防御</td><td>Fángyù</td></tr>
+    <tr><td>Zaiflik</td><td>漏洞</td><td>Lòudòng</td></tr>
+  </table>
+</div>
+
+<!-- ==================== ENGLISH ==================== -->
+<div class="content-section" id="lang-english">
+  <div class="lang-header">
+    <div class="lang-flag">🇬🇧</div>
+    <div>
+      <div class="lang-title">ENGLISH — INGLIZCHA</div>
+      <div class="lang-subtitle">COMPLETE CYBERSECURITY ENGLISH GUIDE</div>
+    </div>
+  </div>
+
+  <div class="modules-grid">
+
+    <div class="module-card">
+      <div class="module-num">01</div>
+      <div class="module-tag">BASICS</div>
+      <div class="module-title">Cybersecurity Basics<br><span style="color:var(--muted);font-size:1rem">Kiberxavfsizlik Asoslari</span></div>
+      <div class="module-desc">Learn essential cybersecurity terminology in English.</div>
+      <div class="lesson-box">
+        <div class="lesson-title">KEY TERMS</div>
+        <div class="lesson-text">
+          Threat — Tahdid<br>
+          Vulnerability — Zaiflik<br>
+          Exploit — Foydalanish<br>
+          Payload — Yuk<br>
+          Reconnaissance — Razvedka
+        </div>
+      </div>
+      <div class="module-footer">
+        <span class="module-level level-beginner">BEGINNER</span>
+        <span>5 lessons</span>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-num">02</div>
+      <div class="module-tag">COMMANDS</div>
+      <div class="module-title">Essential Commands<br><span style="color:var(--muted);font-size:1rem">Asosiy Buyruqlar</span></div>
+      <div class="module-desc">Master the most important cybersecurity commands in English.</div>
+      <div class="code-box">
+        <span class="c-muted"># Scan all ports aggressively</span><br>
+        <span class="c-green">nmap</span> -A -p- target<br><br>
+        <span class="c-muted"># Find SUID files</span><br>
+        <span class="c-green">find</span> / -perm -4000 2>/dev/null<br><br>
+        <span class="c-muted"># Check sudo privileges</span><br>
+        <span class="c-green">sudo</span> -l
+      </div>
+      <div class="module-footer">
+        <span class="module-level level-intermediate">INTERMEDIATE</span>
+        <span>10 lessons</span>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-num">03</div>
+      <div class="module-tag">RED TEAM</div>
+      <div class="module-title">Red Team English<br><span style="color:var(--muted);font-size:1rem">Hujum Terminologiyasi</span></div>
+      <div class="module-desc">Red Team operations vocabulary and phrases in English.</div>
+      <div class="lesson-box">
+        <div class="lesson-title">RED TEAM PHRASES</div>
+        <div class="lesson-text">
+          "I found an open port" — Ochiq port topdim<br>
+          "The service is vulnerable" — Xizmat zaif<br>
+          "Privilege escalation successful" — Huquq oshirildi<br>
+          "Shell obtained" — Shell olindi<br>
+          "Persistence established" — Backdoor o'rnatildi
+        </div>
+      </div>
+      <div class="module-footer">
+        <span class="module-level level-intermediate">INTERMEDIATE</span>
+        <span>8 lessons</span>
+      </
+[01.06.2026 15:15] 生活很美好, 要及时珍惜: div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-num">04</div>
+      <div class="module-tag">CERTIFICATIONS</div>
+      <div class="module-title">English Certifications<br><span style="color:var(--muted);font-size:1rem">Ingliz Sertifikatlari</span></div>
+      <div class="module-desc">Top cybersecurity certifications that require English.</div>
+      <div class="lesson-box">
+        <div class="lesson-title">TOP CERTIFICATIONS</div>
+        <div class="lesson-text">
+          OSCP — Offensive Security Certified Professional<br>
+          PNPT — Practical Network Penetration Tester<br>
+          CEH — Certified Ethical Hacker<br>
+          CISSP — Certified Info Systems Security Pro<br>
+          CompTIA Security+ — Entry level
+        </div>
+      </div>
+      <div class="module-footer">
+        <span class="module-level level-advanced">ADVANCED</span>
+        <span>15 lessons</span>
+      </div>
+    </div>
+
+  </div>
+
+  <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:2px;color:#fff;margin-bottom:1rem">🇬🇧 INGLIZCHA LUGHATI</h3>
+  <table class="vocab-table">
+    <tr><th>O'ZBEKCHA</th><th>ENGLISH</th><th>TALAFFUZ</th></tr>
+    <tr><td>Haker</td><td>Hacker</td><td>[ˈhækər]</td></tr>
+    <tr><td>Parol</td><td>Password</td><td>[ˈpæswɜːrd]</td></tr>
+    <tr><td>Shifrlash</td><td>Encryption</td><td>[ɪnˈkrɪpʃən]</td></tr>
+    <tr><td>Zararli dastur</td><td>Malware</td><td>[ˈmælweər]</td></tr>
+    <tr><td>Tarmoq</td><td>Network</td><td>[ˈnetwɜːrk]</td></tr>
+    <tr><td>Hujum</td><td>Attack</td><td>[əˈtæk]</td></tr>
+    <tr><td>Himoya</td><td>Defense</td><td>[dɪˈfens]</td></tr>
+    <tr><td>Zaiflik</td><td>Vulnerability</td><td>[ˌvʌlnərəˈbɪlɪti]</td></tr>
+  </table>
+</div>
+
+<!-- ==================== TURKISH ==================== -->
+<div class="content-section" id="lang-turkish">
+  <div class="lang-header">
+    <div class="lang-flag">🇹🇷</div>
+    <div>
+      <div class="lang-title">TÜRKÇE — TURKCHA</div>
+      <div class="lang-subtitle">TÜRK SİBER GÜVENLİK REHBERİ · TURKCHA KIBERXAVFSIZLIK</div>
+    </div>
+  </div>
+
+  <div class="modules-grid">
+
+    <div class="module-card">
+      <div class="module-num">01</div>
+      <div class="module-tag">TEMEL · ASOSLAR</div>
+      <div class="module-title">Siber Güvenlik Temelleri<br><span style="color:var(--muted);font-size:1rem">Kiberxavfsizlik Asoslari</span></div>
+      <div class="module-desc">Kiberxavfsizlik asoslarini Turkcha terminologiya bilan o'rganing.</div>
+      <div class="lesson-box">
+        <div class="lesson-title">ASOSIY SO'ZLAR</div>
+        <div class="lesson-text">
+          Hacker — Bilgisayar korsanı<br>
+          Güvenlik — Xavfsizlik<br>
+          Ağ güvenliği — Tarmoq xavfsizligi<br>
+          Güvenlik duvarı — Firewall<br>
+          Şifreleme — Shifrlash
+        </div>
+      </div>
+      <div class="module-footer">
+        <span class="module-level level-beginner">BOSHLANGICH</span>
+        <span>5 dars</span>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-num">02</div>
+      <div class="module-tag">SALDIRI · HUJUM</div>
+      <div class="module-title">Saldırı Teknikleri<br><span style="color:var(--muted);font-size:1rem">Hujum Texnikalari</span></div>
+      <div class="module-desc">Hujum texnikalarini Turkcha terminologiya bilan o'rganing.</div>
+      <div class="code-box">
+        <span class="c-muted"># Port taraması (Port Scanning)</span><br>
+        <span class="c-green">nmap</span> -A -p- <span class="c-cyan">hedef</span><br><br>
+        <span class="c-muted"># Dizin keşfi (Directory Discovery)</span><br>
+        <span class="c-green">gobuster</span> dir -u http://hedef
+      </div>
+      <div class="module-footer">
+        <span class="module-level level-intermediate">O'RTA</span>
+        <span>8 dars</span>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-num">03</div>
+      <div class="module-tag">ARAÇLAR · TOOLS</div>
+      <div class="module-title">Güvenlik Araçları<br><span style="color:var(--muted);font-size:1rem">Xavfsizlik Toollar</s
+[01.06.2026 15:15] 生活很美好, 要及时珍惜: pan></div>
+      <div class="module-desc">Mashhur kiberxavfsizlik toollarini Turkcha bilan o'rganing.</div>
+      <div class="lesson-box">
+        <div class="lesson-title">TOOLLAR TURKCHA</div>
+        <div class="lesson-text">
+          Nmap — Ağ tarayıcısı<br>
+          Metasploit — Saldırı çerçevesi<br>
+          Burp Suite — Web test aracı<br>
+          Wireshark — Paket analizörü<br>
+          SQLmap — SQL enjeksiyon aracı
+        </div>
+      </div>
+      <div class="module-footer">
+        <span class="module-level level-intermediate">O'RTA</span>
+        <span>10 dars</span>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-num">04</div>
+      <div class="module-tag">SERTİFİKA · SERTIFIKAT</div>
+      <div class="module-title">Türk Sertifikaları<br><span style="color:var(--muted);font-size:1rem">Turkiya Sertifikatlari</span></div>
+      <div class="module-desc">Turkiyada kiberxavfsizlik sohasidagi eng muhim sertifikatlar.</div>
+      <div class="lesson-box">
+        <div class="lesson-title">TURKIYA SERTIFIKATLARI</div>
+        <div class="lesson-text">
+          BTK Akademi — Rasmiy IT ta'lim<br>
+          e-Devlet Güvenlik — Davlat xavfsizlik<br>
+          OSCP — Sızma testi uzmanı<br>
+          CEH — Etik hacker sertifikası<br>
+          TSE — Turk standartlari
+        </div>
+      </div>
+      <div class="module-footer">
+        <span class="module-level level-advanced">QIYIN</span>
+        <span>12 dars</span>
+      </div>
+    </div>
+
+  </div>
+
+  <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:2px;color:#fff;margin-bottom:1rem">🇹🇷 TURKCHA LUGHATI</h3>
+  <table class="vocab-table">
+    <tr><th>O'ZBEKCHA</th><th>TÜRKÇE</th><th>TALAFFUZ</th></tr>
+    <tr><td>Haker</td><td>Hacker / Korsan</td><td>Korsan</td></tr>
+    <tr><td>Parol</td><td>Şifre / Parola</td><td>Shifre</td></tr>
+    <tr><td>Shifrlash</td><td>Şifreleme</td><td>Shifreleme</td></tr>
+    <tr><td>Zararli dastur</td><td>Zararlı yazılım</td><td>Zararli yazilim</td></tr>
+    <tr><td>Tarmoq</td><td>Ağ</td><td>Aa</td></tr>
+    <tr><td>Hujum</td><td>Saldırı</td><td>Saldiri</td></tr>
+    <tr><td>Himoya</td><td>Savunma</td><td>Savunma</td></tr>
+    <tr><td>Zaiflik</td><td>Güvenlik açığı</td><td>Gyuvenlik achigi</td></tr>
+  </table>
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">CYBERUZ</a>
+  <div class="footer-copy">© 2026 CyberUz — Barcha huquqlar himoyalangan</div>
+</footer>
+
+<script>
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('open');
+}
+
+function showLang(lang) {
+  // Hide all
+  document.querySelectorAll('.content-section').forEach(function(s) {
+    s.classList.remove('active');
+  });
+  document.querySelectorAll('.lang-tab').forEach(function(t) {
+    t.classList.remove('active');
+  });
+
+  // Show selected
+  document.getElementById('lang-' + lang).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+</script>
+
+</body>
+</html>
