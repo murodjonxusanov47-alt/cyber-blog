@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel — CyberUz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    :root {
+      --bg: #050a0e;
+      --green: #00ff88;
+      --cyan: #00e5ff;
+      --red: #ff2d55;
+      --yellow: #ffd60a;
+      --text: #c8d8e4;
+      --muted: #4a6070;
+      --card: #0d1e2c;
+      --border: #1a3045;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,136,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,136,0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(5,10,14,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 3px;
+      color: var(--green);
+      text-decoration: none;
+    }
+
+    .logo span { color: var(--cyan); }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .admin-badge {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--yellow);
+      border: 1px solid var(--yellow);
+      padding: 3px 10px;
+      letter-spacing: 2px;
+    }
+
+    .logout-btn {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--red);
+      border: 1px solid var(--red);
+      padding: 3px 10px;
+      background: transparent;
+      cursor: pointer;
+      letter-spacing: 2px;
+    }
+
+    /* MAIN */
+    .main {
+      position: relative;
+      z-index: 1;
+      padding: 80px 2rem 4rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* AUTH SCREEN */
+    .auth-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+    }
+
+    .auth-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 400px;
+      position: relative;
+    }
+
+    .auth-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--green), var(--cyan));
+    }
+
+    .auth-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 3px;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .auth-subtitle {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      margin-bottom: 2rem;
+    }
+
+    .form-group { margin-bottom: 1.5rem; }
+
+    .form-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 0.9rem 1rem;
+      color: var(--text);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .form-input:focus { border-color: var(--green); }
+    .form-input::placeholder { color: var(--muted); }
+
+    .btn-green {
+      width: 100%;
+      background: var(--green);
+      color: #000;
+      border: none;
+      padding: 1rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.9rem;
+      letter-spacing: 3px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    .btn-green:hover { background: #00cc6a; }
+
+    .msg {
+      padding: 0.8rem 1rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .msg.success { background: rgba(0,255,136,0.1); border: 1px solid var(--green); color: var(--green); display: block; }
+    .msg.error { background: rgba(255,45,85,0.1); border: 1px solid var(--red); color: var(--red); display: block; }
+
+    /* ADMIN PANEL */
+    .admin-panel { display: none; }
+
+    .panel-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      letter-spacing: 3px;
+      color: #fff;
+      margin-bottom: 0.3rem;
+    }
+
+    .panel-subtitle {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+    }
+
+    /* TABS */
+    .panel-tabs {
+      display: flex;
+      gap: 1px;
+      background: var(--border);
+      margin-bottom: 2rem;
+    }
+
+    .panel-tab {
+      padding: 0.75rem 1.5rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      background: var(--card);
+      color: var(--muted);
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s;
+    }
+
+    .panel-tab.active { background: var(--green); color: #000; font-weight: bold; }
+
+    /* ARTICLE FORM */
+    .article-form {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      position: relative;
+    }
+
+    .article-form::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--green), var(--cyan));
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 0.9rem 1rem;
+      color: var(--text);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.3s;
+      resize: vertical;
+      min-height: 120px;
+      line-height: 1.6;
+    }
+
+    .form-textarea:focus { border-color: var(--green); }
+    .form-textarea::placeholder { color: var(--muted); }
+
+    .form-select {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 0.9rem 1rem;
+      color: var(--text);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .btn-submit {
+      background: var(--green);
+      color: #000;
+      border: none;
+      padding: 1rem 2rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.9rem;
+      letter-spacing: 3px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 1rem;
+      transition: all 0.3s;
+    }
+
+    .btn-submit:hover { background: #00cc6a; }
+    .btn-submit:disabled { background: var(--muted); cursor: not-allowed; }
+
+    /* ARTICLES LIST */
+    .articles-list { display: none; }
+
+    .article-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      margin-bottom: 1px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      transition: background 0.3s;
+    }
+
+    .article-item:hover { background: #0f2335; }
+
+    .article-item-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      color: #fff;
+      letter-spacing: 1px;
+      margin-bottom: 0.3rem;
+    }
+
+    .article-item-meta {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .article-item-cat {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      padding: 2px 8px;
+      border: 1px solid var(--green);
+      color: var(--green);
+      display: inline-block;
+      margin-bottom: 0.3rem;
+    }
+
+    .btn-delete {
+      background: transparent;
+      border: 1px solid var(--red);
+      color: var(--red);
+      padding: 5px 12px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      cursor: pointer;
+      white-space: nowrap;
+      letter-spacing: 1px;
+      transition: all 0.3s;
+    }
+
+    .btn-delete:hover { background: rgba(255,45,85,0.1); }
+
+    .empty-msg {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-align: center;
+      padding: 3rem;
+      border: 1px dashed var(--border);
+    }
+
+    /* Stats */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--card);
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      color: var(--green);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      margin-top: 0.3rem;
+    }
+
+    @media (max-width: 768px) {
+      .form-row { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Cyber<span>Uz</span></a>
+  <div class="nav-right">
+    <span class="admin-badge" id="adminBadge" style="display:none">ADMIN</span>
+    <button class="logout-btn" id="logoutBtn" style="display:none" onclick="handleLogout()">CHIQISH</button>
+  </div>
+</nav>
+
+<div class="main">
+
+  <!-- AUTH SCREEN -->
+  <div class="auth-screen" id="authScreen">
+    <div class="auth-card">
+      <div class="auth-title">ADMIN PANEL</div>
+      <div class="auth-subtitle">> FAQAT ADMIN UCHUN</div>
+
+      <div class="form-group">
+        <label class="form-label">EMAIL</label>
+        <input type="email" class="form-input" id="adminEmail" placeholder="admin@cyberuz.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">PAROL</label>
+        <input type="password" class="form-input" id="adminPassword" placeholder="••••••••"/>
+      </div>
+      <button class="btn-green" onclick="handleLogin()">KIRISH</button>
+      <div class="msg" id="authMsg"></div>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div class="admin-panel" id="adminPanel">
+
+    <div class="panel-header">
+      <div class="panel-title">ADMIN PANEL</div>
+      <div class="panel-subtitle" id="userEmail">> admin@cyberuz.com</div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num" id="totalArticles">0</div>
+        <div class="stat-label">MAQOLALAR</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="totalCategories">0</div>
+        <div class="stat-label">KATEGORIYALAR</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">✅</div>
+        <div class="stat-label">FAOL</div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="panel-tabs">
+      <button class="panel-tab active" onclick="showTab('add', this)">+ MAQOLA QO'SH</button>
+      <button class="panel-tab" onclick="showTab('list', this)">📋 MAQOLALAR</button>
+    </div>
+
+    <!-- ADD ARTICLE FORM -->
+    <div class="article-form" id="addTab">
+      <div class="form-group">
+        <label class="form-label">SARLAVHA *</label>
+        <input type="text" class="form-input" id="artTitle" placeholder="Maqola sarlavhasi..."/>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">KATEGORIYA</label>
+          <select class="form-select" id="artCategory">
+            <option value="RED TEAM">RED TEAM</option>
+            <option value="BLUE TEAM">BLUE TEAM</option>
+            <option value="TOOLS">TOOLS</option>
+            <option value="CTF">CTF</option>
+            <option value="OSCP">OSCP</option>
+            <option value="NETWORK">NETWORK</option>
+            <option value="WEB">WEB</option>
+            <option value="LINUX">LINUX</option>
+            <option value="WINDOWS">WINDOWS</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">MUALLIF</label>
+          <input type="text" class="form-input" id="artAuthor" placeholder="Murodjon" value="Admin"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">QISQACHA MAZMUN</label>
+        <textarea class="form-textarea" id="artExcerpt" placeholder="Maqolaning qisqacha mazmuni..." style="min-height:80px"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">TO'LIQ MAQOLA MATNI *</label>
+        <textarea class="form-textarea" id="artContent" placeholder="Maqola to'liq matni bu yerga..."></textarea>
+      </div>
+
+      <button class="btn-submit" id="submitBtn" onclick="addArticle()">✅ MAQOLANI SAQLASH</button>
+      <div class="msg" id="formMsg"></div>
+    </div>
+
+    <!-- ARTICLES LIST -->
+    <div class="articles-list" id="listTab">
+      <div id="articlesList"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// SUPABASE
+const SUPABASE_URL = 'https://lmlffvhunmzbwqclyjld.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_KEinIeXIT9HSQEcW9FbeoA_s4octV20';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// CHECK SESSION
+async function checkSession() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    showPanel(session.user.email);
+  }
+}
+
+checkSession();
+
+// LOGIN
+async function handleLogin() {
+  const email = document.getElementById('adminEmail').value;
+  const password = document.getElementById('adminPassword').value;
+  const msg = document.getElementById('authMsg');
+
+  if (!email || !password) {
+    msg.textContent = '⚠ Email va parol kiriting!';
+    msg.className = 'msg error';
+    return;
+  }
+
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    msg.textContent = '❌ Email yoki parol noto`g`ri!';
+    msg.className = 'msg error';
+  } else {
+    showPanel(data.user.email);
+  }
+}
+
+// LOGOUT
+async function handleLogout() {
+  await sb.auth.signOut();
+  document.getElementById('authScreen').style.display = 'flex';
+  document.getElementById('adminPanel').style.display = 'none';
+  document.getElementById('adminBadge').style.display = 'none';
+  document.getElementById('logoutBtn').style.display = 'none';
+}
+
+// SHOW PANEL
+function showPanel(email) {
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('adminPanel').style.display = 'block';
+  document.getElementById('adminBadge').style.display = 'inline';
+  document.getElementById('logoutBtn').style.display = 'inline';
+  document.getElementById('userEmail').textContent = '> ' + email;
+  loadArticles();
+}
+
+// SHOW TAB
+function showTab(tab, btn) {
+  document.querySelectorAll('.panel-tab').forEach(function(t) { t.classList.remove('active'); });
+  btn.classList.add('active');
+
+  if (tab === 'add') {
+    document.getElementById('addTab').style.display = 'block';
+    document.getElementById('listTab').style.display = 'none';
+  } else {
+    document.getElementById('addTab').style.display = 'none';
+    document.getElementById('listTab').style.display = 'block';
+    loadArticles();
+  }
+}
+
+// ADD ARTICLE
+async function addArticle() {
+  const title = document.getElementById('artTitle').value.trim();
+  const category = document.getElementById('artCategory').value;
+  const author = document.getElementById('artAuthor').value.trim();
+  const excerpt = document.getElementById('artExcerpt').value.trim();
+  const content = document.getElementById('artContent').value.trim();
+  const btn = document.getElementById('submitBtn');
+  const msg = document.getElementById('formMsg');
+
+  if (!title || !content) {
+    msg.textContent = '⚠ Sarlavha va matn majburiy!';
+    msg.className = 'msg error';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'SAQLANMOQDA...';
+
+  const { data, error } = await sb.from('articles').insert([{
+    title, category, author, excerpt, content
+  }]);
+
+  if (error) {
+    msg.textContent = '❌ Xato: ' + error.message;
+    msg.className = 'msg error';
+  } else {
+    msg.textContent = '✅ Maqola muvaffaqiyatli saqlandi!';
+    msg.className = 'msg success';
+    document.getElementById('artTitle').value = '';
+    document.getElementById('artExcerpt').value = '';
+    document.getElementById('artContent').value = '';
+    loadArticles();
+  }
+
+  btn.disabled = false;
+  btn.textContent = '✅ MAQOLANI SAQLASH';
+}
+
+// LOAD ARTICLES
+async function loadArticles() {
+  const { data, error } = await sb.from('articles').select('*').order('created_at', { ascending: false });
+
+  if (error) return;
+
+  const list = document.getElementById('articlesList');
+  const total = data ? data.length : 0;
+  document.getElementById('totalArticles').textContent = total;
+
+  const cats = data ? [...new Set(data.map(function(a) { return a.category; }))].length : 0;
+  document.getElementById('totalCategories').textContent = cats;
+
+  if (!data || data.length === 0) {
+    list.innerHTML = '<div class="empty-msg">Hali maqola yo`q. Birinchi maqolangizni yozing!</div>';
+    return;
+  }
+
+  list.innerHTML = data.map(function(article) {
+    return '<div class="article-item">' +
+      '<div>' +
+        '<div class="article-item-cat">' + (article.category || 'GENERAL') + '</div>' +
+        '<div class="article-item-title">' + article.title + '</div>' +
+        '<div class="article-item-meta">' + (article.author || 'Admin') + ' · ' + new Date(article.created_at).toLocaleDateString('uz') + '</div>' +
+      '</div>' +
+      '<button class="btn-delete" onclick="deleteArticle(' + article.id + ')">O`CHIRISH</button>' +
+    '</div>';
+  }).join('');
+}
+
+// DELETE ARTICLE
+async function deleteArticle(id) {
+  if (!confirm('Maqolani o`chirasizmi?')) return;
+
+  const { error } = await sb.from('articles').delete().eq('id', id);
+
+  if (!error) {
+    loadArticles();
+  }
+}
+
+// Enter key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.getElementById('authScreen').style.display !== 'none') {
+    handleLogin();
+  }
+});
+</script>
+
+</body>
+</html>
